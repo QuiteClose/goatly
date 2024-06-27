@@ -1,0 +1,11 @@
+# Go
+.cache
+*.out
+
+# MacOS
+.DS_Store
+
+# Temporary Files
+*.swp
+*.idea
+
