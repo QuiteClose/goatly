@@ -8,9 +8,14 @@ help:
 	@echo "Please use 'make <TARGET>' where <TARGET> is one of:"
 	@echo
 	@echo "    help            Show this dialogue."
+	@echo "    test            Run tests locally."
 	@echo "    tidy            Tidy Go module and format Go files."
 	@echo
 
+
+test:
+	@echo "Running tests..."
+	@go test ./...
 
 tidy:
 	@if [[ ! -z "$(shell git status -s)" ]]; then \
