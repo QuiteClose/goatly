@@ -1,8 +1,25 @@
 package unless
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 ///////////////////////////////////////////////////////////////////////////////
+
+// DirExists will call the callback unless the directory exists
+func DirExists(path string, callback func(string)) {
+	info, err := os.Stat(path)
+	if err == nil {
+		if !info.IsDir() {
+			callback(fmt.Sprintf("%s is not a directory", path))
+		}
+	} else {
+		if os.IsNotExist(err) {
+			callback(fmt.Sprintf("%s is not an existing path", path))
+		}
+	}
+}
 
 // Equal will call the callback unless a == b
 func Equal(a, b interface{}, callback func(string)) {
@@ -28,16 +45,4 @@ func True(a bool, callback func(string)) {
 	if !a {
 		callback("false != true")
 	}
-}
-
-// NotEqual will call the callback unless a != b
-func NotEqual(a, b interface{}, callback func(string)) {
-	if a == b {
-		callback(fmt.Sprintf("%v == %v", a, b))
-	}
-}
-
-// NotNil will call the callback unless a != nil
-func NotNil(a interface{}, callback func(string)) {
-	NotEqual(a, nil, callback)
 }

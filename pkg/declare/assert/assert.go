@@ -10,6 +10,13 @@ import (
 
 ///////////////////////////////////////////////////////////////////////////////
 
+// DirExists will call t.Fatalf unless the directory exists
+func DirExists(t *testing.T, path string, message string) {
+	unless.DirExists(path, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
 // Equal will call t.Fatalf unless a == b
 func Equal(t *testing.T, a, b interface{}, message string) {
 	unless.Equal(a, b, func(s string) {
@@ -34,20 +41,6 @@ func Nil(t *testing.T, a interface{}, message string) {
 // True will call t.Fatalf unless a == true
 func True(t *testing.T, a bool, message string) {
 	unless.True(a, func(s string) {
-		t.Fatalf("AssertError: %s (%s)", s, message)
-	})
-}
-
-// NotEqual will call t.Fatalf unless a != b
-func NotEqual(t *testing.T, a, b interface{}, message string) {
-	unless.NotEqual(a, b, func(s string) {
-		t.Fatalf("AssertError: %s (%s)", s, message)
-	})
-}
-
-// NotNil will call t.Fatalf unless a != nil
-func NotNil(t *testing.T, a interface{}, message string) {
-	unless.NotNil(a, func(s string) {
 		t.Fatalf("AssertError: %s (%s)", s, message)
 	})
 }

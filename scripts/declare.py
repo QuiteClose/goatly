@@ -90,7 +90,12 @@ if __name__ == '__main__':
     unless_path = sys.argv[2]
     declare_path = sys.argv[3]
     error_type, testing_call = PACKAGES[package_name]
-    with open(os.path.join(unless_path, 'unless.go'), 'r') as reader:
-        with open(os.path.join(declare_path, package_name+'.go'), 'w') as writer:
-            run(reader, writer, package_name, error_type, testing_call)
+    jobs = [
+        ('unless.go', package_name+'.go'),
+        ('not.go', 'not.go'),
+    ]
+    for origin_file, target_file in jobs:
+        with open(os.path.join(unless_path, origin_file), 'r') as reader:
+            with open(os.path.join(declare_path, target_file), 'w') as writer:
+                run(reader, writer, package_name, error_type, testing_call)
 

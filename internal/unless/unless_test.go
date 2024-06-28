@@ -8,7 +8,32 @@ import (
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// Equal should not call the callback unless a == b
+// DirExists should not call the callback if the directory exists
+func TestDirExistsConditionMet(t *testing.T) {
+	called := false
+	existingPath := t.TempDir()
+	DirExists(existingPath, func(s string) {
+		called = true
+	})
+	if called {
+		t.Error("Callback must not be called when the condition is met!")
+	}
+}
+
+// DirExists should call the callback if the directory does not exist
+func TestDirExistsConditionMiss(t *testing.T) {
+	called := false
+	existingPath := t.TempDir()
+	nonExistingPath := existingPath + "spoiled"
+	DirExists(nonExistingPath, func(s string) {
+		called = true
+	})
+	if !called {
+		t.Error("Callback must be called when the condition is missed!")
+	}
+}
+
+// Equal should not call the callback if a == b
 func TestEqualConditionMet(t *testing.T) {
 	called := false
 	Equal(1, 1, func(s string) {
