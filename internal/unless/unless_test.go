@@ -8,6 +8,28 @@ import (
 
 ///////////////////////////////////////////////////////////////////////////////
 
+// Contains should not call the callback if the string contains the substring
+func TestContainsConditionMet(t *testing.T) {
+	called := false
+	Contains("a", "a", func(s string) {
+		called = true
+	})
+	if called {
+		t.Error("Callback must not be called when the condition is met!")
+	}
+}
+
+// Contains should call the callback if the string does not contain the substring
+func TestContainsConditionMiss(t *testing.T) {
+	called := false
+	Contains("a", "b", func(s string) {
+		called = true
+	})
+	if !called {
+		t.Error("Callback must be called when the condition is missed!")
+	}
+}
+
 // DirExists should not call the callback if the directory exists
 func TestDirExistsConditionMet(t *testing.T) {
 	called := false

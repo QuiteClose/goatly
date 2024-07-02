@@ -3,9 +3,17 @@ package unless
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 ///////////////////////////////////////////////////////////////////////////////
+
+// Contains will call the callback unless a contains b
+func Contains(a, b string, callback func(string)) {
+	if !strings.Contains(a, b) {
+		callback(fmt.Sprintf("%#v does not contain %#v", a, b))
+	}
+}
 
 // DirExists will call the callback unless the directory exists
 func DirExists(path string, callback func(string)) {

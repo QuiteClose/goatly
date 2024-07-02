@@ -10,6 +10,13 @@ import (
 
 ///////////////////////////////////////////////////////////////////////////////
 
+// Contains will call t.Fatalf unless a contains b
+func Contains(t *testing.T, a, b string, message string) {
+	unless.Contains(a, b, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
 // DirExists will call t.Fatalf unless the directory exists
 func DirExists(t *testing.T, path string, message string) {
 	unless.DirExists(path, func(s string) {
