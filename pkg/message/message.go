@@ -3,6 +3,7 @@ package message
 import (
 	"fmt"
 	"strings"
+	"regexp"
 )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -31,6 +32,17 @@ func MustEqual(noun string, expected, found interface{}) string {
 	return fmt.Sprintf(template, noun, expected, found)
 }
 
+// MustMatch is like MustContain but for regular expressions.
+func MustMatch(noun string, pattern regexp.Regexp, found string) string {
+	template := "%s must match pattern.\nMust match: %q\nFound:\n%s"
+	return fmt.Sprintf(
+		template,
+		noun,
+		pattern.String(),
+		Prefix(found, "  ~ "),
+	)
+}
+
 // MustNotContain assumes that the expected and found values are multi-line
 // text and formats a message with indented values for comparison.
 func MustNotContain(noun, s, substring string) string {
@@ -48,4 +60,15 @@ func MustNotContain(noun, s, substring string) string {
 func MustNotEqual(noun string, found interface{}) string {
 	template := "%s must not equal %#v"
 	return fmt.Sprintf(template, noun, found)
+}
+
+// MustMatch is like MustNotContain but for regular expressions.
+func MustNotMatch(noun string, pattern regexp.Regexp, found string) string {
+	template := "%s must not match pattern.\nMust not match: %q\nFound:\n%s"
+	return fmt.Sprintf(
+		template,
+		noun,
+		pattern.String(),
+		Prefix(found, "  ~ "),
+	)
 }
