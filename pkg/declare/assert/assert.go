@@ -4,9 +4,11 @@
 package assert
 
 import (
+	"regexp"
+	"testing"
+
 	"github.com/quiteclose/goatly/internal/unless"
 	"github.com/quiteclose/goatly/pkg/run"
-	"testing"
 )
 
 ///////////////////////////////////////////////////////////////////////////////
