@@ -105,7 +105,7 @@ func RunNotStderr(t *testing.T, s *run.Status, expected string, message string) 
 }
 
 // RunNotStderrMatch will call t.Errorf if the run.Status.Stderr matches the given regular expression.
-func RunNotStderrMatch(t *testing.T, s *run.Status, pattern regexp.Regexp, message string) bool {
+func RunNotStderrMatch(t *testing.T, s *run.Status, pattern *regexp.Regexp, message string) bool {
 	return unless.RunNotStderrMatch(s, pattern, func(s string) {
 		t.Errorf("ExpectFailed: %s\n%s", message, s)
 	})
@@ -119,7 +119,7 @@ func RunNotStdout(t *testing.T, s *run.Status, expected string, message string) 
 }
 
 // RunNotStdoutMatch will call t.Errorf if the run.Status.Stdout matches the given regular expression.
-func RunNotStdoutMatch(t *testing.T, s *run.Status, pattern regexp.Regexp, message string) bool {
+func RunNotStdoutMatch(t *testing.T, s *run.Status, pattern *regexp.Regexp, message string) bool {
 	return unless.RunNotStdoutMatch(s, pattern, func(s string) {
 		t.Errorf("ExpectFailed: %s\n%s", message, s)
 	})
@@ -133,7 +133,7 @@ func RunStderr(t *testing.T, s *run.Status, expected string, message string) boo
 }
 
 // RunStderrMatch will call t.Errorf unless the run.Status.Stderr matches the given regular expression.
-func RunStderrMatch(t *testing.T, s *run.Status, pattern regexp.Regexp, message string) bool {
+func RunStderrMatch(t *testing.T, s *run.Status, pattern *regexp.Regexp, message string) bool {
 	return unless.RunStderrMatch(s, pattern, func(s string) {
 		t.Errorf("ExpectFailed: %s\n%s", message, s)
 	})
@@ -147,7 +147,7 @@ func RunStdout(t *testing.T, s *run.Status, expected string, message string) boo
 }
 
 // RunStdoutMatch will call t.Errorf unless the run.Status.Stdout matches the given regular expression.
-func RunStdoutMatch(t *testing.T, s *run.Status, pattern regexp.Regexp, message string) bool {
+func RunStdoutMatch(t *testing.T, s *run.Status, pattern *regexp.Regexp, message string) bool {
 	return unless.RunStdoutMatch(s, pattern, func(s string) {
 		t.Errorf("ExpectFailed: %s\n%s", message, s)
 	})
