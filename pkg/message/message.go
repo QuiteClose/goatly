@@ -15,7 +15,7 @@ func Prefix(s, prefix string) string {
 // UnexpectedText assumes that the expected and found values are multi-line
 // text and formats a message with indented values for comparison.
 func UnexpectedText(noun, expected, found string) string {
-	template := "Unexpected %s. Expected:\n%s\nFound:\n%s"
+	template := "Unexpected %s.\nExpected:\n%s\nFound:\n%s"
 	return fmt.Sprintf(
 		template,
 		noun,

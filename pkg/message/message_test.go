@@ -26,7 +26,8 @@ func TestUnexpectedText(t *testing.T) {
 	noun := "value"
 	a := "Expected"
 	b := "Found"
-	expected := `Unexpected value. Expected:
+	expected := `Unexpected value.
+Expected:
   ~ Expected
 Found:
   ~ Found`
@@ -38,7 +39,8 @@ func TestUnexpectedTextMultiLine(t *testing.T) {
 	noun := "value"
 	a := "Expected\nLines"
 	b := "Found\nLines"
-	expected := `Unexpected value. Expected:
+	expected := `Unexpected value.
+Expected:
   ~ Expected
   ~ Lines
 Found:
