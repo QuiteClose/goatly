@@ -102,9 +102,23 @@ func RunNotStderr(t *testing.T, s *run.Status, expected string, message string) 
 	})
 }
 
+// RunNotStderrMatch will call t.Fatalf if the run.Status.Stderr matches the given regular expression.
+func RunNotStderrMatch(t *testing.T, s *run.Status, pattern regexp.Regexp, message string) bool {
+	return unless.RunNotStderrMatch(s, pattern, func(s string) {
+		t.Fatalf("AssertFailed: %s\n%s", message, s)
+	})
+}
+
 // RunStdout will call t.Fatalf unless the run.Status.Stdout contains the given string.
 func RunNotStdout(t *testing.T, s *run.Status, expected string, message string) bool {
 	return unless.RunNotStdout(s, expected, func(s string) {
+		t.Fatalf("AssertFailed: %s\n%s", message, s)
+	})
+}
+
+// RunNotStdoutMatch will call t.Fatalf if the run.Status.Stdout matches the given regular expression.
+func RunNotStdoutMatch(t *testing.T, s *run.Status, pattern regexp.Regexp, message string) bool {
+	return unless.RunNotStdoutMatch(s, pattern, func(s string) {
 		t.Fatalf("AssertFailed: %s\n%s", message, s)
 	})
 }
@@ -116,9 +130,23 @@ func RunStderr(t *testing.T, s *run.Status, expected string, message string) boo
 	})
 }
 
+// RunStderrMatch will call t.Fatalf unless the run.Status.Stderr matches the given regular expression.
+func RunStderrMatch(t *testing.T, s *run.Status, pattern regexp.Regexp, message string) bool {
+	return unless.RunStderrMatch(s, pattern, func(s string) {
+		t.Fatalf("AssertFailed: %s\n%s", message, s)
+	})
+}
+
 // RunStdout will call t.Fatalf unless the run.Status.Stdout contains the given string.
 func RunStdout(t *testing.T, s *run.Status, expected string, message string) bool {
 	return unless.RunStdout(s, expected, func(s string) {
+		t.Fatalf("AssertFailed: %s\n%s", message, s)
+	})
+}
+
+// RunStdoutMatch will call t.Fatalf unless the run.Status.Stdout matches the given regular expression.
+func RunStdoutMatch(t *testing.T, s *run.Status, pattern regexp.Regexp, message string) bool {
+	return unless.RunStdoutMatch(s, pattern, func(s string) {
 		t.Fatalf("AssertFailed: %s\n%s", message, s)
 	})
 }
