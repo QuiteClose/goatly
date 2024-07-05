@@ -46,6 +46,15 @@ func RunNonZeroExitCode(s *run.Status, callback func(string)) bool {
 	return conditionMet
 }
 
+// RunStderr will call the callback unless the run.Status.Stderr contains the given string.
+func RunStderr(s *run.Status, expected string, callback func(string)) bool {
+	conditionMet := !strings.Contains(s.Stderr, expected)
+	if conditionMet {
+		callback(message.MustContain("run.Status.Stderr", s.Stderr, expected))
+	}
+	return conditionMet
+}
+
 // RunStdout will call the callback unless the run.Status.Stdout contains the given string.
 func RunStdout(s *run.Status, expected string, callback func(string)) bool {
 	conditionMet := !strings.Contains(s.Stdout, expected)
@@ -59,7 +68,7 @@ func RunStdout(s *run.Status, expected string, callback func(string)) bool {
 func RunNotStderr(s *run.Status, expected string, callback func(string)) bool {
 	conditionMet := strings.Contains(s.Stderr, expected)
 	if conditionMet {
-		callback(message.MustContain("run.Status.Stderr", s.Stderr, expected))
+		callback(message.MustNotContain("run.Status.Stderr", s.Stderr, expected))
 	}
 	return conditionMet
 }
@@ -68,16 +77,8 @@ func RunNotStderr(s *run.Status, expected string, callback func(string)) bool {
 func RunNotStdout(s *run.Status, expected string, callback func(string)) bool {
 	conditionMet := strings.Contains(s.Stdout, expected)
 	if conditionMet {
-		callback(message.MustContain("run.Status.Stdout", s.Stdout, expected))
+		callback(message.MustNotContain("run.Status.Stdout", s.Stdout, expected))
 	}
 	return conditionMet
 }
 
-// RunStderr will call the callback unless the run.Status.Stderr contains the given string.
-func RunStderr(s *run.Status, expected string, callback func(string)) bool {
-	conditionMet := !strings.Contains(s.Stderr, expected)
-	if conditionMet {
-		callback(message.MustContain("run.Status.Stderr", s.Stderr, expected))
-	}
-	return conditionMet
-}

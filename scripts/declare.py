@@ -36,7 +36,7 @@ import (
 DECLARE_FUNCTION = '''
 {comment}func {declare_name}(t *testing.T, {args}, message string) bool {{
 	return unless.{unless_name}({arg_names}, func(s string) {{
-		{testing_call}("{error_type}: %s (%s)", s, message)
+		{testing_call}("{error_type}: %s\n%s", message, s)
 	}})
 }}'''
 
