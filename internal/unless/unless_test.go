@@ -172,7 +172,7 @@ func TestEqualIntMessage(t *testing.T) {
 	})
 	expected = `0 != 1`
 	if expected != found {
-		t.Errorf(message.UnexpectedText("message", expected, found))
+		t.Errorf(message.MustContain("message", found, expected))
 	}
 }
 
@@ -184,7 +184,7 @@ func TestEqualStringMessage(t *testing.T) {
 	})
 	expected = `"a" != "b"`
 	if found != expected {
-		t.Errorf(message.UnexpectedText("message", expected, found))
+		t.Errorf(message.MustContain("message", found, expected))
 	}
 }
 
@@ -223,7 +223,7 @@ func TestFalseMessage(t *testing.T) {
 	})
 	expected = `true != false`
 	if found != expected {
-		t.Errorf(message.UnexpectedValue("found", expected, found))
+		t.Errorf(message.MustContain("found", found, expected))
 	}
 }
 
@@ -262,6 +262,6 @@ func TestTrueMessage(t *testing.T) {
 	})
 	expected = `false != true`
 	if found != expected {
-		t.Errorf(message.UnexpectedValue("found", expected, found))
+		t.Errorf(message.MustEqual("found", expected, found))
 	}
 }

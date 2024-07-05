@@ -2,8 +2,6 @@ package message
 
 import (
 	"testing"
-
-	"github.com/quiteclose/goatly/pkg/declare/assert"
 )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -12,51 +10,105 @@ func TestPrefixOneLine(t *testing.T) {
 	start := "abc"
 	prefix := "#"
 	expected := "#abc"
-	assert.Equal(t, expected, Prefix(start, prefix), "Prefix should be added to the line.")
+	found := Prefix(start, prefix)
+	if found != expected {
+		t.Errorf("Prefix should be added to the line: %q != %q", expected, found)
+	}
 }
 
 func TestPrefixMultiLine(t *testing.T) {
 	start := "abc\ndef"
 	prefix := "#"
 	expected := "#abc\n#def"
-	assert.Equal(t, expected, Prefix(start, prefix), "Prefix should be added to each line.")
+	found := Prefix(start, prefix)
+	if found != expected {
+		t.Errorf("Prefix should be added to each line: %q != %q", expected, found)
+	}
 }
 
-func TestUnexpectedText(t *testing.T) {
+func TestMustContain(t *testing.T) {
 	noun := "value"
-	a := "Expected"
-	b := "Found"
-	expected := `Unexpected value.
-Expected:
-  ~ Expected
+	a := "Long string of text."
+	b := "Sub-String"
+	expected := `value must contain specific text.
+Must contain:
+  ~ Sub-String
 Found:
-  ~ Found`
-	found := UnexpectedText(noun, a, b)
-	assert.Equal(t, expected, found, "Unexpected should format the message correctly.")
+  ~ Long string of text.`
+	found := MustContain(noun, a, b)
+	if found != expected {
+		t.Errorf("Incorrect message:\nExpected:\n%s\nFound:\n%s", Prefix(expected, "  ~ "), Prefix(found, "  ~ "))
+	}
 }
 
-func TestUnexpectedTextMultiLine(t *testing.T) {
+func TestMustContainMultiLine(t *testing.T) {
 	noun := "value"
-	a := "Expected\nLines"
-	b := "Found\nLines"
-	expected := `Unexpected value.
-Expected:
-  ~ Expected
-  ~ Lines
+	a := "Long string\nof many\nLines"
+	b := "Sub\nString"
+	expected := `value must contain specific text.
+Must contain:
+  ~ Sub
+  ~ String
 Found:
-  ~ Found
+  ~ Long string
+  ~ of many
   ~ Lines`
-	found := UnexpectedText(noun, a, b)
-	assert.Equal(t, expected, found, "Unexpected should format the message correctly.")
+	found := MustContain(noun, a, b)
+	if found != expected {
+		t.Errorf("Incorrect message:\nExpected:\n%s\nFound:\n%s", Prefix(expected, "  ~ "), Prefix(found, "  ~ "))
+	}
 }
 
-func TestUnexpectedValue(t *testing.T) {
+func TestMustNotContain(t *testing.T) {
 	noun := "value"
 	a := "A"
 	b := "B"
-	expected := `Unexpected value. Expected: "A", Found: "B"`
-	found := UnexpectedValue(noun, a, b)
-	t.Log(expected)
-	t.Log(found)
-	assert.Equal(t, expected, found, "UnexpectedValue should format the message correctly.")
+	expected := `value must not contain specific text.
+Must not contain:
+  ~ B
+Found:
+  ~ A`
+	found := MustNotContain(noun, a, b)
+	if found != expected {
+		t.Errorf("Incorrect message:\nExpected:\n%s\nFound:\n%s", Prefix(expected, "  ~ "), Prefix(found, "  ~ "))
+	}
+}
+
+func TestMustNotContainMultiLine(t *testing.T) {
+	noun := "value"
+	a := "Long string\nof many\nLines"
+	b := "Sub\nString"
+	expected := `value must not contain specific text.
+Must not contain:
+  ~ Sub
+  ~ String
+Found:
+  ~ Long string
+  ~ of many
+  ~ Lines`
+	found := MustNotContain(noun, a, b)
+	if found != expected {
+		t.Errorf("Incorrect message:\nExpected:\n%s\nFound:\n%s", Prefix(expected, "  ~ "), Prefix(found, "  ~ "))
+	}
+}
+
+func TestMustEqual(t *testing.T) {
+	noun := "value"
+	a := "A"
+	b := "B"
+	expected := `value must equal "A" but found "B"`
+	found := MustEqual(noun, a, b)
+	if found != expected {
+		t.Errorf("Incorrect message:\nExpected:\n%s\nFound:\n%s", Prefix(expected, "  ~ "), Prefix(found, "  ~ "))
+	}
+}
+
+func TestMustNotEqual(t *testing.T) {
+	noun := "value"
+	a := "A"
+	expected := `value must not equal "A"`
+	found := MustNotEqual(noun, a)
+	if found != expected {
+		t.Errorf("Incorrect message:\nExpected:\n%s\nFound:\n%s", Prefix(expected, "  ~ "), Prefix(found, "  ~ "))
+	}
 }
