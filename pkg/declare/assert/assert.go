@@ -66,6 +66,62 @@ func NotPathExists(t *testing.T, path string, message string) bool {
 	})
 }
 
+// RunError will call t.Fatalf unless the run.Status has an error.
+func RunError(t *testing.T, s *run.Status, message string) bool {
+	return unless.RunError(s, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
+// RunExitCode will call t.Fatalf unless the run.Status has the given exit code.
+func RunExitCode(t *testing.T, s *run.Status, exitCode int, message string) bool {
+	return unless.RunExitCode(s, exitCode, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
+// RunNoError will call t.Fatalf unless the run.Status has an error.
+func RunNoError(t *testing.T, s *run.Status, message string) bool {
+	return unless.RunNoError(s, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
+// RunNonZeroExitCode will call t.Fatalf unless the run.Status has a non-zero exit code.
+func RunNonZeroExitCode(t *testing.T, s *run.Status, message string) bool {
+	return unless.RunNonZeroExitCode(s, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
+// RunStderr will call t.Fatalf unless the run.Status.Stderr contains the given string.
+func RunNotStderr(t *testing.T, s *run.Status, expected string, message string) bool {
+	return unless.RunNotStderr(s, expected, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
+// RunStdout will call t.Fatalf unless the run.Status.Stdout contains the given string.
+func RunNotStdout(t *testing.T, s *run.Status, expected string, message string) bool {
+	return unless.RunNotStdout(s, expected, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
+// RunStderr will call t.Fatalf unless the run.Status.Stderr contains the given string.
+func RunStderr(t *testing.T, s *run.Status, expected string, message string) bool {
+	return unless.RunStderr(s, expected, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
+// RunStdout will call t.Fatalf unless the run.Status.Stdout contains the given string.
+func RunStdout(t *testing.T, s *run.Status, expected string, message string) bool {
+	return unless.RunStdout(s, expected, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
 // True will call t.Fatalf unless a == true
 func True(t *testing.T, a bool, message string) bool {
 	return unless.True(a, func(s string) {
