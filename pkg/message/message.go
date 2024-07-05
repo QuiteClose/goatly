@@ -33,7 +33,7 @@ func MustEqual(noun string, expected, found interface{}) string {
 }
 
 // MustMatch is like MustContain but for regular expressions.
-func MustMatch(noun string, pattern regexp.Regexp, found string) string {
+func MustMatch(noun string, pattern *regexp.Regexp, found string) string {
 	template := "%s must match pattern.\nMust match: %q\nFound:\n%s"
 	return fmt.Sprintf(
 		template,
@@ -63,7 +63,7 @@ func MustNotEqual(noun string, found interface{}) string {
 }
 
 // MustMatch is like MustNotContain but for regular expressions.
-func MustNotMatch(noun string, pattern regexp.Regexp, found string) string {
+func MustNotMatch(noun string, pattern *regexp.Regexp, found string) string {
 	template := "%s must not match pattern.\nMust not match: %q\nFound:\n%s"
 	return fmt.Sprintf(
 		template,

@@ -66,7 +66,7 @@ func RunStdout(s *run.Status, expected string, callback func(string)) bool {
 }
 
 // RunStdoutMatch will call the callback unless the run.Status.Stdout matches the given regular expression.
-func RunStdoutMatch(s *run.Status, pattern regexp.Regexp, callback func(string)) bool {
+func RunStdoutMatch(s *run.Status, pattern *regexp.Regexp, callback func(string)) bool {
 	conditionMet := !pattern.MatchString(s.Stdout)
 	if conditionMet {
 		callback(message.MustMatch("run.Status.Stdout", pattern, s.Stdout))
@@ -75,7 +75,7 @@ func RunStdoutMatch(s *run.Status, pattern regexp.Regexp, callback func(string))
 }
 
 // RunStderrMatch will call the callback unless the run.Status.Stderr matches the given regular expression.
-func RunStderrMatch(s *run.Status, pattern regexp.Regexp, callback func(string)) bool {
+func RunStderrMatch(s *run.Status, pattern *regexp.Regexp, callback func(string)) bool {
 	conditionMet := pattern.MatchString(s.Stderr)
 	if conditionMet {
 		callback(message.MustMatch("run.Status.Stderr", pattern, s.Stderr))
@@ -93,7 +93,7 @@ func RunNotStderr(s *run.Status, expected string, callback func(string)) bool {
 }
 
 // RunNotStderrMatch will call the callback if the run.Status.Stderr matches the given regular expression.
-func RunNotStderrMatch(s *run.Status, pattern regexp.Regexp, callback func(string)) bool {
+func RunNotStderrMatch(s *run.Status, pattern *regexp.Regexp, callback func(string)) bool {
 	conditionMet := pattern.MatchString(s.Stderr)
 	if conditionMet {
 		callback(message.MustNotMatch("run.Status.Stderr", pattern, s.Stderr))
@@ -111,7 +111,7 @@ func RunNotStdout(s *run.Status, expected string, callback func(string)) bool {
 }
 
 // RunNotStdoutMatch will call the callback if the run.Status.Stdout matches the given regular expression.
-func RunNotStdoutMatch(s *run.Status, pattern regexp.Regexp, callback func(string)) bool {
+func RunNotStdoutMatch(s *run.Status, pattern *regexp.Regexp, callback func(string)) bool {
 	conditionMet := pattern.MatchString(s.Stdout)
 	if conditionMet {
 		callback(message.MustNotMatch("run.Status.Stdout", pattern, s.Stdout))
