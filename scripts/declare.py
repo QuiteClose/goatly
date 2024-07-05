@@ -14,8 +14,8 @@ import sys
 ###############################################################################
 
 PACKAGES = {
-    'assert': ('AssertError', 't.Fatalf'),
-    'expect': ('ExpectError', 't.Errorf'),
+    'assert': ('AssertFailed', 't.Fatalf'),
+    'expect': ('ExpectFailed', 't.Errorf'),
 }
 
 PACKAGE_HEADER = '''
