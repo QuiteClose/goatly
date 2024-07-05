@@ -8,6 +8,34 @@ import (
 
 ///////////////////////////////////////////////////////////////////////////////
 
+// Contains should return false unless the callback is called
+func TestContainsReturnsConditionMet(t *testing.T) {
+	called := false
+	given := Contains("a", "a", func(s string) {
+		called = true
+	})
+	if called {
+		t.Errorf("Callback must only be called when the condition is missed!")
+	}
+	if given != called {
+		t.Errorf("Contains must return true/false according to whether the callback was called!")
+	}
+}
+
+// Contains should return true if the callback is called
+func TestContainsReturnsConditionMiss(t *testing.T) {
+	called := false
+	given := Contains("a", "b", func(s string) {
+		called = true
+	})
+	if !called {
+		t.Errorf("Callback must be called when the condition is missed!")
+	}
+	if given != called {
+		t.Errorf("Contains must return true/false according to whether the callback was called!")
+	}
+}
+
 // Contains should not call the callback if the string contains the substring
 func TestContainsConditionMet(t *testing.T) {
 	called := false
@@ -27,6 +55,37 @@ func TestContainsConditionMiss(t *testing.T) {
 	})
 	if !called {
 		t.Error("Callback must be called when the condition is missed!")
+	}
+}
+
+// DirExists should return false unless the callback is called
+func TestDirExistsReturnsConditionMet(t *testing.T) {
+	called := false
+	existingPath := t.TempDir()
+	given := DirExists(existingPath, func(s string) {
+		called = true
+	})
+	if called {
+		t.Errorf("Callback must only be called when the condition is missed!")
+	}
+	if given != called {
+		t.Errorf("DirExists must only return true when the callback is called!")
+	}
+}
+
+// DirExists should return true if the callback is called
+func TestDirExistsReturnsConditionMiss(t *testing.T) {
+	called := false
+	existingPath := t.TempDir()
+	nonExistingPath := existingPath + "spoiled"
+	given := DirExists(nonExistingPath, func(s string) {
+		called = true
+	})
+	if !called {
+		t.Errorf("Callback must be called when the condition is missed!")
+	}
+	if given != called {
+		t.Errorf("DirExists must return true/false according to whether the callback was called!")
 	}
 }
 
@@ -52,6 +111,34 @@ func TestDirExistsConditionMiss(t *testing.T) {
 	})
 	if !called {
 		t.Error("Callback must be called when the condition is missed!")
+	}
+}
+
+// Equal should return false unless the callback is called
+func TestEqualReturnsConditionMet(t *testing.T) {
+	called := false
+	given := Equal(1, 1, func(s string) {
+		called = true
+	})
+	if called {
+		t.Errorf("Callback must only be called when the condition is missed!")
+	}
+	if given != called {
+		t.Errorf("Equal must only return true when the callback is called!")
+	}
+}
+
+// Equal should return true if the callback is called
+func TestEqualReturnsConditionMiss(t *testing.T) {
+	called := false
+	given := Equal(1, 2, func(s string) {
+		called = true
+	})
+	if !called {
+		t.Errorf("Callback must be called when the condition is missed!")
+	}
+	if given != called {
+		t.Errorf("Equal must return true/false according to whether the callback was called!")
 	}
 }
 
@@ -101,23 +188,31 @@ func TestEqualStringMessage(t *testing.T) {
 	}
 }
 
-func TestFalseConditionMet(t *testing.T) {
+// False should return false unless the callback is called
+func TestFalseReturnsConditionMet(t *testing.T) {
 	called := false
-	False(false, func(s string) {
+	given := False(false, func(s string) {
 		called = true
 	})
 	if called {
-		t.Error("False executed the callback when value was false!")
+		t.Errorf("Callback must only be called when the condition is missed!")
+	}
+	if given != called {
+		t.Errorf("False must only return true when the callback is called!")
 	}
 }
 
-func TestFalseConditionMiss(t *testing.T) {
+// False should return true if the callback is called
+func TestFalseReturnsConditionMiss(t *testing.T) {
 	called := false
-	False(true, func(s string) {
+	given := False(true, func(s string) {
 		called = true
 	})
 	if !called {
-		t.Error("Callback must be called when the condition is missed!")
+		t.Errorf("Callback must be called when the condition is missed!")
+	}
+	if given != called {
+		t.Errorf("False must return true/false according to whether the callback was called!")
 	}
 }
 
@@ -127,6 +222,45 @@ func TestFalseMessage(t *testing.T) {
 		found = s
 	})
 	expected = `true != false`
+	if found != expected {
+		t.Errorf(message.UnexpectedValue("found", expected, found))
+	}
+}
+
+// True should return false unless the callback is called
+func TestTrueReturnsConditionMet(t *testing.T) {
+	called := false
+	given := True(true, func(s string) {
+		called = true
+	})
+	if called {
+		t.Errorf("Callback must only be called when the condition is missed!")
+	}
+	if given != called {
+		t.Errorf("False must only return true when the callback is called!")
+	}
+}
+
+// True should return true if the callback is called
+func TestTrueReturnsConditionMiss(t *testing.T) {
+	called := false
+	given := True(false, func(s string) {
+		called = true
+	})
+	if !called {
+		t.Errorf("Callback must be called when the condition is missed!")
+	}
+	if given != called {
+		t.Errorf("True must return true/false according to whether the callback was called!")
+	}
+}
+
+func TestTrueMessage(t *testing.T) {
+	var expected, found string
+	True(false, func(s string) {
+		found = s
+	})
+	expected = `false != true`
 	if found != expected {
 		t.Errorf(message.UnexpectedValue("found", expected, found))
 	}

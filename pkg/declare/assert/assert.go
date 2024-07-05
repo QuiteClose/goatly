@@ -11,43 +11,64 @@ import (
 ///////////////////////////////////////////////////////////////////////////////
 
 // Contains will call t.Fatalf unless a contains b
-func Contains(t *testing.T, a, b string, message string) {
-	unless.Contains(a, b, func(s string) {
+func Contains(t *testing.T, a, b string, message string) bool {
+	return unless.Contains(a, b, func(s string) {
 		t.Fatalf("AssertError: %s (%s)", s, message)
 	})
 }
 
 // DirExists will call t.Fatalf unless the directory exists
-func DirExists(t *testing.T, path string, message string) {
-	unless.DirExists(path, func(s string) {
+func DirExists(t *testing.T, path string, message string) bool {
+	return unless.DirExists(path, func(s string) {
 		t.Fatalf("AssertError: %s (%s)", s, message)
 	})
 }
 
 // Equal will call t.Fatalf unless a == b
-func Equal(t *testing.T, a, b interface{}, message string) {
-	unless.Equal(a, b, func(s string) {
+func Equal(t *testing.T, a, b interface{}, message string) bool {
+	return unless.Equal(a, b, func(s string) {
 		t.Fatalf("AssertError: %s (%s)", s, message)
 	})
 }
 
 // False will call t.Fatalf unless a == false
-func False(t *testing.T, a bool, message string) {
-	unless.False(a, func(s string) {
+func False(t *testing.T, a bool, message string) bool {
+	return unless.False(a, func(s string) {
 		t.Fatalf("AssertError: %s (%s)", s, message)
 	})
 }
 
 // Nil will call t.Fatalf unless a == nil
-func Nil(t *testing.T, a interface{}, message string) {
-	unless.Nil(a, func(s string) {
+func Nil(t *testing.T, a interface{}, message string) bool {
+	return unless.Nil(a, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
+// NotEqual will call t.Fatalf unless a != b
+func NotEqual(t *testing.T, a, b interface{}, message string) bool {
+	return unless.NotEqual(a, b, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
+// NotNil will call t.Fatalf unless a != nil
+func NotNil(t *testing.T, a interface{}, message string) bool {
+	return unless.NotNil(a, func(s string) {
+		t.Fatalf("AssertError: %s (%s)", s, message)
+	})
+}
+
+// NotPathExists will call t.Fatalf if the path exists
+func NotPathExists(t *testing.T, path string, message string) bool {
+	return unless.NotPathExists(path, func(s string) {
 		t.Fatalf("AssertError: %s (%s)", s, message)
 	})
 }
 
 // True will call t.Fatalf unless a == true
-func True(t *testing.T, a bool, message string) {
-	unless.True(a, func(s string) {
+func True(t *testing.T, a bool, message string) bool {
+	return unless.True(a, func(s string) {
 		t.Fatalf("AssertError: %s (%s)", s, message)
 	})
 }

@@ -9,48 +9,55 @@ import (
 ///////////////////////////////////////////////////////////////////////////////
 
 // Contains will call the callback unless a contains b
-func Contains(a, b string, callback func(string)) {
-	if !strings.Contains(a, b) {
+func Contains(a, b string, callback func(string)) bool {
+	conditionMet := !strings.Contains(a, b)
+	if conditionMet {
 		callback(fmt.Sprintf("%#v does not contain %#v", a, b))
 	}
+	return conditionMet
 }
 
 // DirExists will call the callback unless the directory exists
-func DirExists(path string, callback func(string)) {
+func DirExists(path string, callback func(string)) bool {
+	conditionMet := false
 	info, err := os.Stat(path)
 	if err == nil {
-		if !info.IsDir() {
-			callback(fmt.Sprintf("%s is not a directory", path))
-		}
+		conditionMet = !info.IsDir()
 	} else {
-		if os.IsNotExist(err) {
-			callback(fmt.Sprintf("%s is not an existing path", path))
-		}
+		conditionMet = os.IsNotExist(err)
 	}
+	if conditionMet {
+		callback(fmt.Sprintf("%s is not a directory", path))
+	}
+	return conditionMet
 }
 
 // Equal will call the callback unless a == b
-func Equal(a, b interface{}, callback func(string)) {
-	if a != b {
+func Equal(a, b interface{}, callback func(string)) bool {
+	conditionMet := a != b
+	if conditionMet {
 		callback(fmt.Sprintf("%#v != %#v", a, b))
 	}
+	return conditionMet
 }
 
 // False will call the callback unless a == false
-func False(a bool, callback func(string)) {
+func False(a bool, callback func(string)) bool {
 	if a {
 		callback("true != false")
 	}
+	return a
 }
 
 // Nil will call the callback unless a == nil
-func Nil(a interface{}, callback func(string)) {
-	Equal(a, nil, callback)
+func Nil(a interface{}, callback func(string)) bool {
+	return Equal(a, nil, callback)
 }
 
 // True will call the callback unless a == true
-func True(a bool, callback func(string)) {
+func True(a bool, callback func(string)) bool {
 	if !a {
 		callback("false != true")
 	}
+	return !a
 }

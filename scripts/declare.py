@@ -33,8 +33,8 @@ import (
 '''.strip()
 
 DECLARE_FUNCTION = '''
-{comment}func {declare_name}(t *testing.T, {args}, message string) {{
-	unless.{unless_name}({arg_names}, func(s string) {{
+{comment}func {declare_name}(t *testing.T, {args}, message string) bool {{
+	return unless.{unless_name}({arg_names}, func(s string) {{
 		{testing_call}("{error_type}: %s (%s)", s, message)
 	}})
 }}'''
@@ -70,16 +70,27 @@ def read_functions(stream):
                 comment_block = []
 
 
-def run(reader, writer, package_name, error_type, testing_call):
+def parse_package(package_name, error_type, testing_call, *source_paths):
     result = []
+    functions = []
     result.append(PACKAGE_HEADER.format(
         package_name=package_name,
         error_type=error_type,
         testing_call=testing_call,
     ))
-    for function_line, comment in read_functions(reader):
-        result.append(parse_function(function_line, comment, error_type, testing_call))
-    print('\n'.join(result), file=writer)
+    for source_path in source_paths:
+        with open(source_path) as reader:
+            for name, comment in read_functions(reader):
+                functions.append((name, comment))
+    for name, comment in sorted(functions):
+        result.append(parse_function(name, comment, error_type, testing_call))
+    return '\n'.join(result)
+
+
+def run(package_name, error_type, testing_call, target_path, *source_paths):
+    with open(target_path, 'w') as writer:
+        print(parse_package(package_name, error_type, testing_call, *source_paths), file=writer)
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 4 or sys.argv[1] not in PACKAGES:
@@ -90,12 +101,10 @@ if __name__ == '__main__':
     unless_path = sys.argv[2]
     declare_path = sys.argv[3]
     error_type, testing_call = PACKAGES[package_name]
-    jobs = [
-        ('unless.go', package_name+'.go'),
-        ('not.go', 'not.go'),
+    target_path = os.path.join(declare_path, package_name+'.go')
+    source_paths = [
+        os.path.join(unless_path, file_name) for file_name in
+        ['unless.go', 'not.go']
     ]
-    for origin_file, target_file in jobs:
-        with open(os.path.join(unless_path, origin_file), 'r') as reader:
-            with open(os.path.join(declare_path, target_file), 'w') as writer:
-                run(reader, writer, package_name, error_type, testing_call)
+    run(package_name, error_type, testing_call, target_path, *source_paths)
 
