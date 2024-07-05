@@ -19,4 +19,3 @@ type Status struct {
 	Stderr   string
 	Streams  *IoStreams
 }
-

@@ -49,4 +49,3 @@ func MustNotEqual(noun string, found interface{}) string {
 	template := "%s must not equal %#v"
 	return fmt.Sprintf(template, noun, found)
 }
-

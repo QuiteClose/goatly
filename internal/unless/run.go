@@ -81,4 +81,3 @@ func RunStderr(s *run.Status, expected string, callback func(string)) bool {
 	}
 	return conditionMet
 }
-
