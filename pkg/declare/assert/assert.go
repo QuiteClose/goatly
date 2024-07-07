@@ -226,8 +226,8 @@ func NotTimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration, message stri
 }
 
 // NotType will call t.Fatalf unless a is not of the given type
-func NotType(t *testing.T, a interface{}, t reflect.Type, message string) bool {
-	return unless.NotType(a, t, func(s string) {
+func NotType(t *testing.T, a interface{}, b reflect.Type, message string) bool {
+	return unless.NotType(a, b, func(s string) {
 		t.Fatalf("AssertFailed: %s\n%s", message, s)
 	})
 }
@@ -366,8 +366,8 @@ func True(t *testing.T, a bool, message string) bool {
 }
 
 // Type will call t.Fatalf unless a is of the given type
-func Type(t *testing.T, a interface{}, t reflect.Type, message string) bool {
-	return unless.Type(a, t, func(s string) {
+func Type(t *testing.T, a interface{}, b reflect.Type, message string) bool {
+	return unless.Type(a, b, func(s string) {
 		t.Fatalf("AssertFailed: %s\n%s", message, s)
 	})
 }
