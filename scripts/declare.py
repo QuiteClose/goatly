@@ -25,8 +25,13 @@ PACKAGE_HEADER = '''
 package {package_name}
 
 import (
+	"fmt"
+	"os"
+	"reflect"
 	"regexp"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/quiteclose/goatly/internal/unless"
 	"github.com/quiteclose/goatly/pkg/run"
