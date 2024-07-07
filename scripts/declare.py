@@ -25,11 +25,8 @@ PACKAGE_HEADER = '''
 package {package_name}
 
 import (
-	"fmt"
-	"os"
 	"reflect"
 	"regexp"
-	"strings"
 	"testing"
 	"time"
 
