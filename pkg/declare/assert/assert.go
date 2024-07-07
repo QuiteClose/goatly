@@ -4,8 +4,13 @@
 package assert
 
 import (
+	"fmt"
+	"os"
+	"reflect"
 	"regexp"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/quiteclose/goatly/internal/unless"
 	"github.com/quiteclose/goatly/pkg/run"
@@ -13,8 +18,15 @@ import (
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// Contains will call t.Fatalf unless a contains b
-func Contains(t *testing.T, a, b string, message string) bool {
+// Any will call t.Fatalf unless any item from sub-set b is in a
+func Any(t *testing.T, a, b interface{}, message string) bool {
+	return unless.Any(a, b, func(s string) {
+		t.Fatalf("AssertFailed: %s\n%s", message, s)
+	})
+}
+
+// Contains will call t.Fatalf unless a contains b (sub-set b is in a)
+func Contains(t *testing.T, a, b interface{}, message string) bool {
 	return unless.Contains(a, b, func(s string) {
 		t.Fatalf("AssertFailed: %s\n%s", message, s)
 	})
@@ -27,8 +39,8 @@ func DirExists(t *testing.T, path string, message string) bool {
 	})
 }
 
-// Empty will call t.Fatalf unless the string is empty
-func Empty(t *testing.T, a string, message string) bool {
+// Empty will call t.Fatalf unless the string or slice is empty
+func Empty(t *testing.T, a interface{}, message string) bool {
 	return unless.Empty(a, func(s string) {
 		t.Fatalf("AssertFailed: %s\n%s", message, s)
 	})
@@ -104,6 +116,13 @@ func LessThanOrEqual(t *testing.T, a, b int, message string) bool {
 	})
 }
 
+// LongerThan will call t.Fatalf unless the length of the string or slice is greater than n
+func LongerThan(t *testing.T, a interface{}, n int, message string) bool {
+	return unless.LongerThan(a, n, func(s string) {
+		t.Fatalf("AssertFailed: %s\n%s", message, s)
+	})
+}
+
 // Matches will call t.Fatalf unless a matches the regex pattern
 func Matches(t *testing.T, a, pattern string, message string) bool {
 	return unless.Matches(a, pattern, func(s string) {
@@ -118,8 +137,15 @@ func Nil(t *testing.T, a interface{}, message string) bool {
 	})
 }
 
-// NotContains will call t.Fatalf unless a does not contain b
-func NotContains(t *testing.T, a, b string, message string) bool {
+// NotAny will call t.Fatalf unless no item from sub-set b is in a
+func NotAny(t *testing.T, a, b interface{}, message string) bool {
+	return unless.NotAny(a, b, func(s string) {
+		t.Fatalf("AssertFailed: %s\n%s", message, s)
+	})
+}
+
+// NotContains will call t.Fatalf unless a does not contain b (sub-set b is not in a)
+func NotContains(t *testing.T, a, b interface{}, message string) bool {
 	return unless.NotContains(a, b, func(s string) {
 		t.Fatalf("AssertFailed: %s\n%s", message, s)
 	})
@@ -132,8 +158,8 @@ func NotDirExists(t *testing.T, path string, message string) bool {
 	})
 }
 
-// NotEmpty will call t.Fatalf unless the string is not empty
-func NotEmpty(t *testing.T, a string, message string) bool {
+// NotEmpty will call t.Fatalf unless the string or slice is not empty
+func NotEmpty(t *testing.T, a interface{}, message string) bool {
 	return unless.NotEmpty(a, func(s string) {
 		t.Fatalf("AssertFailed: %s\n%s", message, s)
 	})
@@ -189,13 +215,6 @@ func NotNil(t *testing.T, a interface{}, message string) bool {
 }
 
 // NotPathExists will call t.Fatalf if the path exists
-func NotPathExists(t *testing.T, path string, message string) bool {
-	return unless.NotPathExists(path, func(s string) {
-		t.Fatalf("AssertFailed: %s\n%s", message, s)
-	})
-}
-
-// NotPathExists will call t.Fatalf unless the path does not exist
 func NotPathExists(t *testing.T, path string, message string) bool {
 	return unless.NotPathExists(path, func(s string) {
 		t.Fatalf("AssertFailed: %s\n%s", message, s)
@@ -310,6 +329,13 @@ func RunStdout(t *testing.T, s *run.Status, expected string, message string) boo
 // RunStdoutMatch will call t.Fatalf unless the run.Status.Stdout matches the given regular expression.
 func RunStdoutMatch(t *testing.T, s *run.Status, pattern *regexp.Regexp, message string) bool {
 	return unless.RunStdoutMatch(s, pattern, func(s string) {
+		t.Fatalf("AssertFailed: %s\n%s", message, s)
+	})
+}
+
+// ShorterThan will call t.Fatalf unless the length of the string or slice is less than n
+func ShorterThan(t *testing.T, a interface{}, n int, message string) bool {
+	return unless.ShorterThan(a, n, func(s string) {
 		t.Fatalf("AssertFailed: %s\n%s", message, s)
 	})
 }
