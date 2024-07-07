@@ -359,10 +359,10 @@ func NotPathExists(path string, callback func(string)) bool {
 }
 
 // NotType will call the callback unless a is not of the given type
-func NotType(a interface{}, t reflect.Type, callback func(string)) bool {
-	conditionMet := reflect.TypeOf(a) == t
+func NotType(a interface{}, b reflect.Type, callback func(string)) bool {
+	conditionMet := reflect.TypeOf(a) == b
 	if conditionMet {
-		callback(fmt.Sprintf("%#v is of type %T", a, t))
+		callback(fmt.Sprintf("%#v is of type %T", a, b))
 	}
 	return conditionMet
 }
@@ -436,10 +436,10 @@ func True(a bool, callback func(string)) bool {
 }
 
 // Type will call the callback unless a is of the given type
-func Type(a interface{}, t reflect.Type, callback func(string)) bool {
-	conditionMet := reflect.TypeOf(a) != t
+func Type(a interface{}, b reflect.Type, callback func(string)) bool {
+	conditionMet := reflect.TypeOf(a) != b
 	if conditionMet {
-		callback(fmt.Sprintf("%#v is not of type %T", a, t))
+		callback(fmt.Sprintf("%#v is not of type %T", a, b))
 	}
 	return conditionMet
 }

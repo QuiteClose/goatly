@@ -4,11 +4,8 @@
 package assert
 
 import (
-	"fmt"
-	"os"
 	"reflect"
 	"regexp"
-	"strings"
 	"testing"
 	"time"
 

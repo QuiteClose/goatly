@@ -4,11 +4,8 @@
 package expect
 
 import (
-	"fmt"
-	"os"
 	"reflect"
 	"regexp"
-	"strings"
 	"testing"
 	"time"
 
