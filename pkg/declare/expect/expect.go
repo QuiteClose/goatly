@@ -27,9 +27,37 @@ func DirExists(t *testing.T, path string, message string) bool {
 	})
 }
 
+// Empty will call t.Errorf unless the string is empty
+func Empty(t *testing.T, a string, message string) bool {
+	return unless.Empty(a, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
 // Equal will call t.Errorf unless a == b
 func Equal(t *testing.T, a, b interface{}, message string) bool {
 	return unless.Equal(a, b, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// Error will call t.Errorf unless err is not nil
+func Error(t *testing.T, err error, message string) bool {
+	return unless.Error(err, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// ErrorContains will call t.Errorf unless the error message contains the substring
+func ErrorContains(t *testing.T, err error, substr string, message string) bool {
+	return unless.ErrorContains(err, substr, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// ErrorType will call t.Errorf unless the error is of the given type
+func ErrorType(t *testing.T, err error, errType interface{}, message string) bool {
+	return unless.ErrorType(err, errType, func(s string) {
 		t.Errorf("ExpectFailed: %s\n%s", message, s)
 	})
 }
@@ -41,6 +69,48 @@ func False(t *testing.T, a bool, message string) bool {
 	})
 }
 
+// FileExists will call t.Errorf unless the file exists
+func FileExists(t *testing.T, path string, message string) bool {
+	return unless.FileExists(path, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// GreaterThan will call t.Errorf unless a > b
+func GreaterThan(t *testing.T, a, b int, message string) bool {
+	return unless.GreaterThan(a, b, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// GreaterThanOrEqual will call t.Errorf unless a >= b
+func GreaterThanOrEqual(t *testing.T, a, b int, message string) bool {
+	return unless.GreaterThanOrEqual(a, b, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// LessThan will call t.Errorf unless a < b
+func LessThan(t *testing.T, a, b int, message string) bool {
+	return unless.LessThan(a, b, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// LessThanOrEqual will call t.Errorf unless a <= b
+func LessThanOrEqual(t *testing.T, a, b int, message string) bool {
+	return unless.LessThanOrEqual(a, b, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// Matches will call t.Errorf unless a matches the regex pattern
+func Matches(t *testing.T, a, pattern string, message string) bool {
+	return unless.Matches(a, pattern, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
 // Nil will call t.Errorf unless a == nil
 func Nil(t *testing.T, a interface{}, message string) bool {
 	return unless.Nil(a, func(s string) {
@@ -48,9 +118,65 @@ func Nil(t *testing.T, a interface{}, message string) bool {
 	})
 }
 
+// NotContains will call t.Errorf unless a does not contain b
+func NotContains(t *testing.T, a, b string, message string) bool {
+	return unless.NotContains(a, b, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotDirExists will call t.Errorf unless the directory does not exist
+func NotDirExists(t *testing.T, path string, message string) bool {
+	return unless.NotDirExists(path, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotEmpty will call t.Errorf unless the string is not empty
+func NotEmpty(t *testing.T, a string, message string) bool {
+	return unless.NotEmpty(a, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
 // NotEqual will call t.Errorf unless a != b
 func NotEqual(t *testing.T, a, b interface{}, message string) bool {
 	return unless.NotEqual(a, b, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotError will call t.Errorf unless err is nil
+func NotError(t *testing.T, err error, message string) bool {
+	return unless.NotError(err, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotErrorContains will call t.Errorf unless the error message does not contain the substring
+func NotErrorContains(t *testing.T, err error, substr string, message string) bool {
+	return unless.NotErrorContains(err, substr, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotErrorType will call t.Errorf unless the error is not of the given type
+func NotErrorType(t *testing.T, err error, errType interface{}, message string) bool {
+	return unless.NotErrorType(err, errType, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotFileExists will call t.Errorf unless the file does not exist
+func NotFileExists(t *testing.T, path string, message string) bool {
+	return unless.NotFileExists(path, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotMatches will call t.Errorf unless a does not match the regex pattern
+func NotMatches(t *testing.T, a, pattern string, message string) bool {
+	return unless.NotMatches(a, pattern, func(s string) {
 		t.Errorf("ExpectFailed: %s\n%s", message, s)
 	})
 }
@@ -65,6 +191,41 @@ func NotNil(t *testing.T, a interface{}, message string) bool {
 // NotPathExists will call t.Errorf if the path exists
 func NotPathExists(t *testing.T, path string, message string) bool {
 	return unless.NotPathExists(path, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotPathExists will call t.Errorf unless the path does not exist
+func NotPathExists(t *testing.T, path string, message string) bool {
+	return unless.NotPathExists(path, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotTimeWithin will call t.Errorf unless the time is not within the duration
+func NotTimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration, message string) bool {
+	return unless.NotTimeWithin(t1, t2, d, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotType will call t.Errorf unless a is not of the given type
+func NotType(t *testing.T, a interface{}, t reflect.Type, message string) bool {
+	return unless.NotType(a, t, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// NotZero will call t.Errorf unless a is not zero
+func NotZero(t *testing.T, a interface{}, message string) bool {
+	return unless.NotZero(a, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// PathExists will call t.Errorf unless the path exists
+func PathExists(t *testing.T, path string, message string) bool {
+	return unless.PathExists(path, func(s string) {
 		t.Errorf("ExpectFailed: %s\n%s", message, s)
 	})
 }
@@ -153,9 +314,44 @@ func RunStdoutMatch(t *testing.T, s *run.Status, pattern *regexp.Regexp, message
 	})
 }
 
+// TimeAfter will call t.Errorf unless t1 is after t2
+func TimeAfter(t *testing.T, t1, t2 time.Time, message string) bool {
+	return unless.TimeAfter(t1, t2, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// TimeBefore will call t.Errorf unless t1 is before t2
+func TimeBefore(t *testing.T, t1, t2 time.Time, message string) bool {
+	return unless.TimeBefore(t1, t2, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// TimeWithin will call t.Errorf unless the time is within the duration
+func TimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration, message string) bool {
+	return unless.TimeWithin(t1, t2, d, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
 // True will call t.Errorf unless a == true
 func True(t *testing.T, a bool, message string) bool {
 	return unless.True(a, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// Type will call t.Errorf unless a is of the given type
+func Type(t *testing.T, a interface{}, t reflect.Type, message string) bool {
+	return unless.Type(a, t, func(s string) {
+		t.Errorf("ExpectFailed: %s\n%s", message, s)
+	})
+}
+
+// Zero will call t.Errorf unless a is zero
+func Zero(t *testing.T, a interface{}, message string) bool {
+	return unless.Zero(a, func(s string) {
 		t.Errorf("ExpectFailed: %s\n%s", message, s)
 	})
 }
