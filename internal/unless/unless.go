@@ -3,7 +3,10 @@ package unless
 import (
 	"fmt"
 	"os"
+	"reflect"
+	"regexp"
 	"strings"
+	"time"
 )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -32,11 +35,47 @@ func DirExists(path string, callback func(string)) bool {
 	return conditionMet
 }
 
+// Empty will call the callback unless the string is empty
+func Empty(a string, callback func(string)) bool {
+	conditionMet := a != ""
+	if conditionMet {
+		callback(fmt.Sprintf("%#v is not empty", a))
+	}
+	return conditionMet
+}
+
 // Equal will call the callback unless a == b
 func Equal(a, b interface{}, callback func(string)) bool {
 	conditionMet := a != b
 	if conditionMet {
 		callback(fmt.Sprintf("%#v != %#v", a, b))
+	}
+	return conditionMet
+}
+
+// Error will call the callback unless err is not nil
+func Error(err error, callback func(string)) bool {
+	conditionMet := err == nil
+	if conditionMet {
+		callback("no error occurred")
+	}
+	return conditionMet
+}
+
+// ErrorContains will call the callback unless the error message contains the substring
+func ErrorContains(err error, substr string, callback func(string)) bool {
+	conditionMet := err == nil || !strings.Contains(err.Error(), substr)
+	if conditionMet {
+		callback(fmt.Sprintf("error does not contain %s", substr))
+	}
+	return conditionMet
+}
+
+// ErrorType will call the callback unless the error is of the given type
+func ErrorType(err error, errType interface{}, callback func(string)) bool {
+	conditionMet := err == nil || reflect.TypeOf(err) != reflect.TypeOf(errType)
+	if conditionMet {
+		callback(fmt.Sprintf("error is not of type %T", errType))
 	}
 	return conditionMet
 }
@@ -49,9 +88,217 @@ func False(a bool, callback func(string)) bool {
 	return a
 }
 
+// FileExists will call the callback unless the file exists
+func FileExists(path string, callback func(string)) bool {
+	conditionMet := false
+	info, err := os.Stat(path)
+	if err == nil {
+		conditionMet = info.IsDir()
+	} else {
+		conditionMet = os.IsNotExist(err)
+	}
+	if conditionMet {
+		callback(fmt.Sprintf("%s is not a file", path))
+	}
+	return conditionMet
+}
+
+// GreaterThan will call the callback unless a > b
+func GreaterThan(a, b int, callback func(string)) bool {
+	conditionMet := a <= b
+	if conditionMet {
+		callback(fmt.Sprintf("%d is not greater than %d", a, b))
+	}
+	return conditionMet
+}
+
+// GreaterThanOrEqual will call the callback unless a >= b
+func GreaterThanOrEqual(a, b int, callback func(string)) bool {
+	conditionMet := a < b
+	if conditionMet {
+		callback(fmt.Sprintf("%d is not greater than or equal to %d", a, b))
+	}
+	return conditionMet
+}
+
+// LessThan will call the callback unless a < b
+func LessThan(a, b int, callback func(string)) bool {
+	conditionMet := a >= b
+	if conditionMet {
+		callback(fmt.Sprintf("%d is not less than %d", a, b))
+	}
+	return conditionMet
+}
+
+// LessThanOrEqual will call the callback unless a <= b
+func LessThanOrEqual(a, b int, callback func(string)) bool {
+	conditionMet := a > b
+	if conditionMet {
+		callback(fmt.Sprintf("%d is not less than or equal to %d", a, b))
+	}
+	return conditionMet
+}
+
+// Matches will call the callback unless a matches the regex pattern
+func Matches(a, pattern string, callback func(string)) bool {
+	matched, err := regexp.MatchString(pattern, a)
+	conditionMet := err != nil || !matched
+	if conditionMet {
+		callback(fmt.Sprintf("%#v does not match pattern %#v", a, pattern))
+	}
+	return conditionMet
+}
+
 // Nil will call the callback unless a == nil
 func Nil(a interface{}, callback func(string)) bool {
 	return Equal(a, nil, callback)
+}
+
+// NotContains will call the callback unless a does not contain b
+func NotContains(a, b string, callback func(string)) bool {
+	conditionMet := strings.Contains(a, b)
+	if conditionMet {
+		callback(fmt.Sprintf("%#v contains %#v", a, b))
+	}
+	return conditionMet
+}
+
+// NotDirExists will call the callback unless the directory does not exist
+func NotDirExists(path string, callback func(string)) bool {
+	conditionMet := false
+	info, err := os.Stat(path)
+	if err == nil {
+		conditionMet = info.IsDir()
+	}
+	if conditionMet {
+		callback(fmt.Sprintf("%s is a directory", path))
+	}
+	return conditionMet
+}
+
+// NotEmpty will call the callback unless the string is not empty
+func NotEmpty(a string, callback func(string)) bool {
+	conditionMet := a == ""
+	if conditionMet {
+		callback("string is empty")
+	}
+	return conditionMet
+}
+
+// NotError will call the callback unless err is nil
+func NotError(err error, callback func(string)) bool {
+	conditionMet := err != nil
+	if conditionMet {
+		callback(fmt.Sprintf("error occurred: %v", err))
+	}
+	return conditionMet
+}
+
+// NotErrorContains will call the callback unless the error message does not contain the substring
+func NotErrorContains(err error, substr string, callback func(string)) bool {
+	conditionMet := err != nil && strings.Contains(err.Error(), substr)
+	if conditionMet {
+		callback(fmt.Sprintf("error contains %s", substr))
+	}
+	return conditionMet
+}
+
+// NotErrorType will call the callback unless the error is not of the given type
+func NotErrorType(err error, errType interface{}, callback func(string)) bool {
+	conditionMet := err != nil && reflect.TypeOf(err) == reflect.TypeOf(errType)
+	if conditionMet {
+		callback(fmt.Sprintf("error is of type %T", errType))
+	}
+	return conditionMet
+}
+
+// NotFileExists will call the callback unless the file does not exist
+func NotFileExists(path string, callback func(string)) bool {
+	conditionMet := false
+	info, err := os.Stat(path)
+	if err == nil {
+		conditionMet = !info.IsDir()
+	} else {
+		conditionMet = os.IsNotExist(err)
+	}
+	if conditionMet {
+		callback(fmt.Sprintf("%s is a file", path))
+	}
+	return conditionMet
+}
+
+// NotMatches will call the callback unless a does not match the regex pattern
+func NotMatches(a, pattern string, callback func(string)) bool {
+	matched, err := regexp.MatchString(pattern, a)
+	conditionMet := err == nil && matched
+	if conditionMet {
+		callback(fmt.Sprintf("%#v matches pattern %#v", a, pattern))
+	}
+	return conditionMet
+}
+
+// NotPathExists will call the callback unless the path does not exist
+func NotPathExists(path string, callback func(string)) bool {
+	conditionMet := !PathExists(path, callback)
+	if conditionMet {
+		callback(fmt.Sprintf("%s exists", path))
+	}
+	return conditionMet
+}
+
+// NotType will call the callback unless a is not of the given type
+func NotType(a interface{}, t reflect.Type, callback func(string)) bool {
+	conditionMet := reflect.TypeOf(a) == t
+	if conditionMet {
+		callback(fmt.Sprintf("%#v is of type %T", a, t))
+	}
+	return conditionMet
+}
+
+// NotTimeWithin will call the callback unless the time is not within the duration
+func NotTimeWithin(t1, t2 time.Time, d time.Duration, callback func(string)) bool {
+	conditionMet := t1.Sub(t2) <= d
+	if conditionMet {
+		callback(fmt.Sprintf("%v is within %v of %v", t1, d, t2))
+	}
+	return conditionMet
+}
+
+// PathExists will call the callback unless the path exists
+func PathExists(path string, callback func(string)) bool {
+	_, err := os.Stat(path)
+	conditionMet := os.IsNotExist(err)
+	if conditionMet {
+		callback(fmt.Sprintf("%s does not exist", path))
+	}
+	return conditionMet
+}
+
+// TimeAfter will call the callback unless t1 is after t2
+func TimeAfter(t1, t2 time.Time, callback func(string)) bool {
+	conditionMet := t1.Before(t2)
+	if conditionMet {
+		callback(fmt.Sprintf("%v is not after %v", t1, t2))
+	}
+	return conditionMet
+}
+
+// TimeBefore will call the callback unless t1 is before t2
+func TimeBefore(t1, t2 time.Time, callback func(string)) bool {
+	conditionMet := t1.After(t2)
+	if conditionMet {
+		callback(fmt.Sprintf("%v is not before %v", t1, t2))
+	}
+	return conditionMet
+}
+
+// TimeWithin will call the callback unless the time is within the duration
+func TimeWithin(t1, t2 time.Time, d time.Duration, callback func(string)) bool {
+	conditionMet := t1.Sub(t2) > d
+	if conditionMet {
+		callback(fmt.Sprintf("%v is not within %v of %v", t1, d, t2))
+	}
+	return conditionMet
 }
 
 // True will call the callback unless a == true
@@ -60,4 +307,31 @@ func True(a bool, callback func(string)) bool {
 		callback("false != true")
 	}
 	return !a
+}
+
+// Type will call the callback unless a is of the given type
+func Type(a interface{}, t reflect.Type, callback func(string)) bool {
+	conditionMet := reflect.TypeOf(a) != t
+	if conditionMet {
+		callback(fmt.Sprintf("%#v is not of type %T", a, t))
+	}
+	return conditionMet
+}
+
+// Zero will call the callback unless a is zero
+func Zero(a interface{}, callback func(string)) bool {
+	conditionMet := !reflect.DeepEqual(a, reflect.Zero(reflect.TypeOf(a)).Interface())
+	if conditionMet {
+		callback(fmt.Sprintf("%#v is not zero", a))
+	}
+	return conditionMet
+}
+
+// NotZero will call the callback unless a is not zero
+func NotZero(a interface{}, callback func(string)) bool {
+	conditionMet := reflect.DeepEqual(a, reflect.Zero(reflect.TypeOf(a)).Interface())
+	if conditionMet {
+		callback(fmt.Sprintf("%#v is zero", a))
+	}
+	return conditionMet
 }
