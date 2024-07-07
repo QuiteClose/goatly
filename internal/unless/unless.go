@@ -11,13 +11,77 @@ import (
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// Contains will call the callback unless a contains b
-func Contains(a, b string, callback func(string)) bool {
-	conditionMet := !strings.Contains(a, b)
-	if conditionMet {
+// Any will call the callback unless any item from sub-set b is in a
+func Any(a, b interface{}, callback func(string)) bool {
+	aVal := reflect.ValueOf(a)
+	bVal := reflect.ValueOf(b)
+
+	if aVal.Kind() != reflect.String && aVal.Kind() != reflect.Slice {
+		callback(fmt.Sprintf("%#v is not a string or slice", a))
+		return true
+	}
+
+	if bVal.Kind() != reflect.String && bVal.Kind() != reflect.Slice {
+		callback(fmt.Sprintf("%#v is not a string or slice", b))
+		return true
+	}
+
+	if aVal.Kind() == reflect.String && bVal.Kind() == reflect.String {
+		return Contains(a.(string), b.(string), callback)
+	}
+
+	for i := 0; i < bVal.Len(); i++ {
+		for j := 0; j < aVal.Len(); j++ {
+			if reflect.DeepEqual(aVal.Index(j).Interface(), bVal.Index(i).Interface()) {
+				return false
+			}
+		}
+	}
+	callback(fmt.Sprintf("no item from %#v is in %#v", b, a))
+	return true
+}
+
+// Contains will call the callback unless a contains b (sub-set b is in a)
+func Contains(a, b interface{}, callback func(string)) bool {
+	aVal := reflect.ValueOf(a)
+	bVal := reflect.ValueOf(b)
+
+	if aVal.Kind() != reflect.String && aVal.Kind() != reflect.Slice {
+		callback(fmt.Sprintf("%#v is not a string or slice", a))
+		return true
+	}
+
+	if bVal.Kind() != reflect.String && bVal.Kind() != reflect.Slice {
+		callback(fmt.Sprintf("%#v is not a string or slice", b))
+		return true
+	}
+
+	if aVal.Kind() == reflect.String && bVal.Kind() == reflect.String {
+		if !strings.Contains(a.(string), b.(string)) {
+			callback(fmt.Sprintf("%#v does not contain %#v", a, b))
+			return true
+		}
+		return false
+	}
+
+	contains := false
+	for i := 0; i <= aVal.Len()-bVal.Len(); i++ {
+		match := true
+		for j := 0; j < bVal.Len(); j++ {
+			if !reflect.DeepEqual(aVal.Index(i+j).Interface(), bVal.Index(j).Interface()) {
+				match = false
+				break
+			}
+		}
+		if match {
+			contains = true
+			break
+		}
+	}
+	if !contains {
 		callback(fmt.Sprintf("%#v does not contain %#v", a, b))
 	}
-	return conditionMet
+	return !contains
 }
 
 // DirExists will call the callback unless the directory exists
@@ -35,9 +99,14 @@ func DirExists(path string, callback func(string)) bool {
 	return conditionMet
 }
 
-// Empty will call the callback unless the string is empty
-func Empty(a string, callback func(string)) bool {
-	conditionMet := a != ""
+// Empty will call the callback unless the string or slice is empty
+func Empty(a interface{}, callback func(string)) bool {
+	v := reflect.ValueOf(a)
+	if v.Kind() != reflect.String && v.Kind() != reflect.Slice {
+		callback(fmt.Sprintf("%#v is not a string or slice", a))
+		return true
+	}
+	conditionMet := v.Len() != 0
 	if conditionMet {
 		callback(fmt.Sprintf("%#v is not empty", a))
 	}
@@ -139,6 +208,20 @@ func LessThanOrEqual(a, b int, callback func(string)) bool {
 	return conditionMet
 }
 
+// LongerThan will call the callback unless the length of the string or slice is greater than n
+func LongerThan(a interface{}, n int, callback func(string)) bool {
+	v := reflect.ValueOf(a)
+	if v.Kind() != reflect.String && v.Kind() != reflect.Slice {
+		callback(fmt.Sprintf("%#v is not a string or slice", a))
+		return true
+	}
+	conditionMet := v.Len() <= n
+	if conditionMet {
+		callback(fmt.Sprintf("%#v is not longer than %d", a, n))
+	}
+	return conditionMet
+}
+
 // Matches will call the callback unless a matches the regex pattern
 func Matches(a, pattern string, callback func(string)) bool {
 	matched, err := regexp.MatchString(pattern, a)
@@ -154,13 +237,22 @@ func Nil(a interface{}, callback func(string)) bool {
 	return Equal(a, nil, callback)
 }
 
-// NotContains will call the callback unless a does not contain b
-func NotContains(a, b string, callback func(string)) bool {
-	conditionMet := strings.Contains(a, b)
-	if conditionMet {
-		callback(fmt.Sprintf("%#v contains %#v", a, b))
+// NotAny will call the callback unless no item from sub-set b is in a
+func NotAny(a, b interface{}, callback func(string)) bool {
+	if !Any(a, b, callback) {
+		return false
 	}
-	return conditionMet
+	callback(fmt.Sprintf("some item from %#v is in %#v", b, a))
+	return true
+}
+
+// NotContains will call the callback unless a does not contain b (sub-set b is not in a)
+func NotContains(a, b interface{}, callback func(string)) bool {
+	if !Contains(a, b, callback) {
+		return false
+	}
+	callback(fmt.Sprintf("%#v contains %#v", a, b))
+	return true
 }
 
 // NotDirExists will call the callback unless the directory does not exist
@@ -176,11 +268,25 @@ func NotDirExists(path string, callback func(string)) bool {
 	return conditionMet
 }
 
-// NotEmpty will call the callback unless the string is not empty
-func NotEmpty(a string, callback func(string)) bool {
-	conditionMet := a == ""
+// NotEmpty will call the callback unless the string or slice is not empty
+func NotEmpty(a interface{}, callback func(string)) bool {
+	v := reflect.ValueOf(a)
+	if v.Kind() != reflect.String && v.Kind() != reflect.Slice {
+		callback(fmt.Sprintf("%#v is not a string or slice", a))
+		return true
+	}
+	conditionMet := v.Len() == 0
 	if conditionMet {
-		callback("string is empty")
+		callback("slice or string is empty")
+	}
+	return conditionMet
+}
+
+// NotEqual will call the callback unless a != b
+func NotEqual(a, b interface{}, callback func(string)) bool {
+	conditionMet := a == b
+	if conditionMet {
+		callback(fmt.Sprintf("%v == %v", a, b))
 	}
 	return conditionMet
 }
@@ -237,11 +343,17 @@ func NotMatches(a, pattern string, callback func(string)) bool {
 	return conditionMet
 }
 
-// NotPathExists will call the callback unless the path does not exist
+// NotNil will call the callback unless a != nil
+func NotNil(a interface{}, callback func(string)) bool {
+	return NotEqual(a, nil, callback)
+}
+
+// NotPathExists will call the callback if the path exists
 func NotPathExists(path string, callback func(string)) bool {
-	conditionMet := !PathExists(path, callback)
+	_, err := os.Stat(path)
+	conditionMet := os.IsNotExist(err)
 	if conditionMet {
-		callback(fmt.Sprintf("%s exists", path))
+		callback(fmt.Sprintf("%s is not an existing path", path))
 	}
 	return conditionMet
 }
@@ -270,6 +382,20 @@ func PathExists(path string, callback func(string)) bool {
 	conditionMet := os.IsNotExist(err)
 	if conditionMet {
 		callback(fmt.Sprintf("%s does not exist", path))
+	}
+	return conditionMet
+}
+
+// ShorterThan will call the callback unless the length of the string or slice is less than n
+func ShorterThan(a interface{}, n int, callback func(string)) bool {
+	v := reflect.ValueOf(a)
+	if v.Kind() != reflect.String && v.Kind() != reflect.Slice {
+		callback(fmt.Sprintf("%#v is not a string or slice", a))
+		return true
+	}
+	conditionMet := v.Len() >= n
+	if conditionMet {
+		callback(fmt.Sprintf("%#v is not shorter than %d", a, n))
 	}
 	return conditionMet
 }

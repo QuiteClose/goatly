@@ -107,7 +107,7 @@ if __name__ == '__main__':
     target_path = os.path.join(declare_path, package_name+'.go')
     source_paths = [
         os.path.join(unless_path, file_name) for file_name in
-        ['unless.go', 'not.go', 'run.go']
+        ['unless.go', 'run.go']
     ]
     run(package_name, error_type, testing_call, target_path, *source_paths)
 
