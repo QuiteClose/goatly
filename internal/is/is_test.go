@@ -823,7 +823,7 @@ func TestTimeBeforeReturnsTrue(t *testing.T) {
 func TestTimeWithinReturnsFalse(t *testing.T) {
 	t1 := time.Now()
 	t2 := t1.Add(-2 * time.Second)
-	expected := fmt.Sprintf("%v is not within 1s of %v", t1, 1*time.Second, t2)
+	expected := fmt.Sprintf("%v is not within 1s of %v", t1, t2)
 	given, reason := TimeWithin(t1, t2, 1*time.Second)
 	if given {
 		t.Errorf("TimeWithin must return false if the time is not within the duration")
