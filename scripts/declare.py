@@ -53,7 +53,7 @@ DECLARE_FUNCTION = '''
 # func Equal(a, b interface{}, callback func(string)) {
 def parse_function(line, comment, error_type, testing_call):
     name = line.split('func ')[1].split('(')[0]
-    args = line.split('(')[1].split(') (bool, string)')[0]
+    args = line.split('(')[1].split(')')[0]
     arg_names = ', '.join([arg.split(' ')[0] for arg in args.split(', ')])
     return DECLARE_FUNCTION.format(
         comment=comment.replace('checks if', f'call {testing_call} unless'),
