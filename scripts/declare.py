@@ -40,7 +40,7 @@ DECLARE_FUNCTION = '''
 	t.Helper()
 	conditionMet, reason := is.{name}({arg_names})
 	if !conditionMet {{
-		{testing_call}("{error_type}: %s\\nDetails: %s", message, reason)
+		{testing_call}("%s\\n{error_type}: %s", message, reason)
 	}}
 	return conditionMet
 }}'''
