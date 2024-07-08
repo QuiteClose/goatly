@@ -17,7 +17,7 @@ import (
 ///////////////////////////////////////////////////////////////////////////////
 
 // Any call t.Errorf unless any item from sub-set b is in a
-func Any(t *testing.T, a, b interface{}) , message string) bool {
+func Any(t *testing.T, a, b interface{}, message string) bool {
 	conditionMet, reason := is.Any(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -26,7 +26,7 @@ func Any(t *testing.T, a, b interface{}) , message string) bool {
 }
 
 // Contains call t.Errorf unless a contains b (sub-set b is in a)
-func Contains(t *testing.T, a, b interface{}) , message string) bool {
+func Contains(t *testing.T, a, b interface{}, message string) bool {
 	conditionMet, reason := is.Contains(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -35,7 +35,7 @@ func Contains(t *testing.T, a, b interface{}) , message string) bool {
 }
 
 // DirExists call t.Errorf unless the directory exists
-func DirExists(t *testing.T, path string) , message string) bool {
+func DirExists(t *testing.T, path string, message string) bool {
 	conditionMet, reason := is.DirExists(path)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -44,7 +44,7 @@ func DirExists(t *testing.T, path string) , message string) bool {
 }
 
 // Empty call t.Errorf unless the string or slice is empty
-func Empty(t *testing.T, a interface{}) , message string) bool {
+func Empty(t *testing.T, a interface{}, message string) bool {
 	conditionMet, reason := is.Empty(a)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -53,7 +53,7 @@ func Empty(t *testing.T, a interface{}) , message string) bool {
 }
 
 // Equal call t.Errorf unless a == b
-func Equal(t *testing.T, a, b interface{}) , message string) bool {
+func Equal(t *testing.T, a, b interface{}, message string) bool {
 	conditionMet, reason := is.Equal(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -62,7 +62,7 @@ func Equal(t *testing.T, a, b interface{}) , message string) bool {
 }
 
 // Error call t.Errorf unless err is not nil
-func Error(t *testing.T, err error) , message string) bool {
+func Error(t *testing.T, err error, message string) bool {
 	conditionMet, reason := is.Error(err)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -71,7 +71,7 @@ func Error(t *testing.T, err error) , message string) bool {
 }
 
 // ErrorContains call t.Errorf unless the error message contains the substring
-func ErrorContains(t *testing.T, err error, substr string) , message string) bool {
+func ErrorContains(t *testing.T, err error, substr string, message string) bool {
 	conditionMet, reason := is.ErrorContains(err, substr)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -80,7 +80,7 @@ func ErrorContains(t *testing.T, err error, substr string) , message string) boo
 }
 
 // ErrorType call t.Errorf unless the error is of the given type
-func ErrorType(t *testing.T, err error, errType interface{}) , message string) bool {
+func ErrorType(t *testing.T, err error, errType interface{}, message string) bool {
 	conditionMet, reason := is.ErrorType(err, errType)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -89,7 +89,7 @@ func ErrorType(t *testing.T, err error, errType interface{}) , message string) b
 }
 
 // False call t.Errorf unless a == false
-func False(t *testing.T, a bool) , message string) bool {
+func False(t *testing.T, a bool, message string) bool {
 	conditionMet, reason := is.False(a)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -98,7 +98,7 @@ func False(t *testing.T, a bool) , message string) bool {
 }
 
 // FileExists call t.Errorf unless the file exists
-func FileExists(t *testing.T, path string) , message string) bool {
+func FileExists(t *testing.T, path string, message string) bool {
 	conditionMet, reason := is.FileExists(path)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -107,7 +107,7 @@ func FileExists(t *testing.T, path string) , message string) bool {
 }
 
 // GreaterThan call t.Errorf unless a > b
-func GreaterThan(t *testing.T, a, b int) , message string) bool {
+func GreaterThan(t *testing.T, a, b int, message string) bool {
 	conditionMet, reason := is.GreaterThan(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -116,7 +116,7 @@ func GreaterThan(t *testing.T, a, b int) , message string) bool {
 }
 
 // GreaterThanOrEqual call t.Errorf unless a >= b
-func GreaterThanOrEqual(t *testing.T, a, b int) , message string) bool {
+func GreaterThanOrEqual(t *testing.T, a, b int, message string) bool {
 	conditionMet, reason := is.GreaterThanOrEqual(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -125,7 +125,7 @@ func GreaterThanOrEqual(t *testing.T, a, b int) , message string) bool {
 }
 
 // LessThan call t.Errorf unless a < b
-func LessThan(t *testing.T, a, b int) , message string) bool {
+func LessThan(t *testing.T, a, b int, message string) bool {
 	conditionMet, reason := is.LessThan(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -134,7 +134,7 @@ func LessThan(t *testing.T, a, b int) , message string) bool {
 }
 
 // LessThanOrEqual call t.Errorf unless a <= b
-func LessThanOrEqual(t *testing.T, a, b int) , message string) bool {
+func LessThanOrEqual(t *testing.T, a, b int, message string) bool {
 	conditionMet, reason := is.LessThanOrEqual(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -143,7 +143,7 @@ func LessThanOrEqual(t *testing.T, a, b int) , message string) bool {
 }
 
 // LongerThan call t.Errorf unless the length of the string or slice is greater than n
-func LongerThan(t *testing.T, a interface{}, n int) , message string) bool {
+func LongerThan(t *testing.T, a interface{}, n int, message string) bool {
 	conditionMet, reason := is.LongerThan(a, n)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -152,7 +152,7 @@ func LongerThan(t *testing.T, a interface{}, n int) , message string) bool {
 }
 
 // Matches call t.Errorf unless a matches the regex pattern
-func Matches(t *testing.T, a, pattern string) , message string) bool {
+func Matches(t *testing.T, a, pattern string, message string) bool {
 	conditionMet, reason := is.Matches(a, pattern)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -161,7 +161,7 @@ func Matches(t *testing.T, a, pattern string) , message string) bool {
 }
 
 // Nil call t.Errorf unless a == nil
-func Nil(t *testing.T, a interface{}) , message string) bool {
+func Nil(t *testing.T, a interface{}, message string) bool {
 	conditionMet, reason := is.Nil(a)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -170,7 +170,7 @@ func Nil(t *testing.T, a interface{}) , message string) bool {
 }
 
 // NotAny call t.Errorf unless no item from sub-set b is in a
-func NotAny(t *testing.T, a, b interface{}) , message string) bool {
+func NotAny(t *testing.T, a, b interface{}, message string) bool {
 	conditionMet, reason := is.NotAny(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -179,7 +179,7 @@ func NotAny(t *testing.T, a, b interface{}) , message string) bool {
 }
 
 // NotContains call t.Errorf unless a does not contain b (sub-set b is not in a)
-func NotContains(t *testing.T, a, b interface{}) , message string) bool {
+func NotContains(t *testing.T, a, b interface{}, message string) bool {
 	conditionMet, reason := is.NotContains(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -188,7 +188,7 @@ func NotContains(t *testing.T, a, b interface{}) , message string) bool {
 }
 
 // NotDirExists call t.Errorf unless the directory does not exist
-func NotDirExists(t *testing.T, path string) , message string) bool {
+func NotDirExists(t *testing.T, path string, message string) bool {
 	conditionMet, reason := is.NotDirExists(path)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -197,7 +197,7 @@ func NotDirExists(t *testing.T, path string) , message string) bool {
 }
 
 // NotEmpty call t.Errorf unless the string or slice is not empty
-func NotEmpty(t *testing.T, a interface{}) , message string) bool {
+func NotEmpty(t *testing.T, a interface{}, message string) bool {
 	conditionMet, reason := is.NotEmpty(a)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -206,7 +206,7 @@ func NotEmpty(t *testing.T, a interface{}) , message string) bool {
 }
 
 // NotError call t.Errorf unless err is nil
-func NotError(t *testing.T, err error) , message string) bool {
+func NotError(t *testing.T, err error, message string) bool {
 	conditionMet, reason := is.NotError(err)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -215,7 +215,7 @@ func NotError(t *testing.T, err error) , message string) bool {
 }
 
 // NotErrorContains call t.Errorf unless the error message does not contain the substring
-func NotErrorContains(t *testing.T, err error, substr string) , message string) bool {
+func NotErrorContains(t *testing.T, err error, substr string, message string) bool {
 	conditionMet, reason := is.NotErrorContains(err, substr)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -224,7 +224,7 @@ func NotErrorContains(t *testing.T, err error, substr string) , message string) 
 }
 
 // NotErrorType call t.Errorf unless the error is not of the given type
-func NotErrorType(t *testing.T, err error, errType interface{}) , message string) bool {
+func NotErrorType(t *testing.T, err error, errType interface{}, message string) bool {
 	conditionMet, reason := is.NotErrorType(err, errType)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -233,7 +233,7 @@ func NotErrorType(t *testing.T, err error, errType interface{}) , message string
 }
 
 // NotFileExists call t.Errorf unless the file does not exist
-func NotFileExists(t *testing.T, path string) , message string) bool {
+func NotFileExists(t *testing.T, path string, message string) bool {
 	conditionMet, reason := is.NotFileExists(path)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -242,7 +242,7 @@ func NotFileExists(t *testing.T, path string) , message string) bool {
 }
 
 // NotMatches call t.Errorf unless a does not match the regex pattern
-func NotMatches(t *testing.T, a, pattern string) , message string) bool {
+func NotMatches(t *testing.T, a, pattern string, message string) bool {
 	conditionMet, reason := is.NotMatches(a, pattern)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -251,7 +251,7 @@ func NotMatches(t *testing.T, a, pattern string) , message string) bool {
 }
 
 // NotPathExists call t.Errorf unless the path does not exist
-func NotPathExists(t *testing.T, path string) , message string) bool {
+func NotPathExists(t *testing.T, path string, message string) bool {
 	conditionMet, reason := is.NotPathExists(path)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -260,7 +260,7 @@ func NotPathExists(t *testing.T, path string) , message string) bool {
 }
 
 // NotTimeWithin call t.Errorf unless the time is not within the duration
-func NotTimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration) , message string) bool {
+func NotTimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration, message string) bool {
 	conditionMet, reason := is.NotTimeWithin(t1, t2, d)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -269,7 +269,7 @@ func NotTimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration) , message st
 }
 
 // NotType call t.Errorf unless a is not of the given type
-func NotType(t *testing.T, a interface{}, t reflect.Type) , message string) bool {
+func NotType(t *testing.T, a interface{}, t reflect.Type, message string) bool {
 	conditionMet, reason := is.NotType(a, t)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -278,7 +278,7 @@ func NotType(t *testing.T, a interface{}, t reflect.Type) , message string) bool
 }
 
 // NotZero call t.Errorf unless a is not zero
-func NotZero(t *testing.T, a interface{}) , message string) bool {
+func NotZero(t *testing.T, a interface{}, message string) bool {
 	conditionMet, reason := is.NotZero(a)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -287,7 +287,7 @@ func NotZero(t *testing.T, a interface{}) , message string) bool {
 }
 
 // PathExists call t.Errorf unless the path exists
-func PathExists(t *testing.T, path string) , message string) bool {
+func PathExists(t *testing.T, path string, message string) bool {
 	conditionMet, reason := is.PathExists(path)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -296,7 +296,7 @@ func PathExists(t *testing.T, path string) , message string) bool {
 }
 
 // ShorterThan call t.Errorf unless the length of the string or slice is less than n
-func ShorterThan(t *testing.T, a interface{}, n int) , message string) bool {
+func ShorterThan(t *testing.T, a interface{}, n int, message string) bool {
 	conditionMet, reason := is.ShorterThan(a, n)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -305,7 +305,7 @@ func ShorterThan(t *testing.T, a interface{}, n int) , message string) bool {
 }
 
 // TimeAfter call t.Errorf unless t1 is after t2
-func TimeAfter(t *testing.T, t1, t2 time.Time) , message string) bool {
+func TimeAfter(t *testing.T, t1, t2 time.Time, message string) bool {
 	conditionMet, reason := is.TimeAfter(t1, t2)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -314,7 +314,7 @@ func TimeAfter(t *testing.T, t1, t2 time.Time) , message string) bool {
 }
 
 // TimeBefore call t.Errorf unless t1 is before t2
-func TimeBefore(t *testing.T, t1, t2 time.Time) , message string) bool {
+func TimeBefore(t *testing.T, t1, t2 time.Time, message string) bool {
 	conditionMet, reason := is.TimeBefore(t1, t2)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -323,7 +323,7 @@ func TimeBefore(t *testing.T, t1, t2 time.Time) , message string) bool {
 }
 
 // TimeWithin call t.Errorf unless the time is within the duration
-func TimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration) , message string) bool {
+func TimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration, message string) bool {
 	conditionMet, reason := is.TimeWithin(t1, t2, d)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -332,7 +332,7 @@ func TimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration) , message strin
 }
 
 // True call t.Errorf unless a == true
-func True(t *testing.T, a bool) , message string) bool {
+func True(t *testing.T, a bool, message string) bool {
 	conditionMet, reason := is.True(a)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -341,7 +341,7 @@ func True(t *testing.T, a bool) , message string) bool {
 }
 
 // Type call t.Errorf unless a is of the given type
-func Type(t *testing.T, a interface{}, t reflect.Type) , message string) bool {
+func Type(t *testing.T, a interface{}, t reflect.Type, message string) bool {
 	conditionMet, reason := is.Type(a, t)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
@@ -350,7 +350,7 @@ func Type(t *testing.T, a interface{}, t reflect.Type) , message string) bool {
 }
 
 // Zero call t.Errorf unless a is zero
-func Zero(t *testing.T, a interface{}) , message string) bool {
+func Zero(t *testing.T, a interface{}, message string) bool {
 	conditionMet, reason := is.Zero(a)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)

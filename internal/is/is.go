@@ -285,11 +285,11 @@ func NotPathExists(path string) (bool, string) {
 }
 
 // NotType checks if a is not of the given type
-func NotType(a interface{}, t reflect.Type) (bool, string) {
-	if ok, _ := Type(a, t); !ok {
+func NotType(a interface{}, b reflect.Type) (bool, string) {
+	if ok, _ := Type(a, b); !ok {
 		return true, ""
 	}
-	return false, fmt.Sprintf("%#v is of type %T", a, t)
+	return false, fmt.Sprintf("%#v is of type %T", a, b)
 }
 
 // NotTimeWithin checks if the time is not within the duration
@@ -354,11 +354,11 @@ func True(a bool) (bool, string) {
 }
 
 // Type checks if a is of the given type
-func Type(a interface{}, t reflect.Type) (bool, string) {
-	if reflect.TypeOf(a) == t {
+func Type(a interface{}, b reflect.Type) (bool, string) {
+	if reflect.TypeOf(a) == b {
 		return true, ""
 	}
-	return false, fmt.Sprintf("%#v is not of type %T", a, t)
+	return false, fmt.Sprintf("%#v is not of type %T", a, b)
 }
 
 // Zero checks if a is zero
