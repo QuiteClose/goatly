@@ -106,6 +106,5 @@ if __name__ == '__main__':
     source_path = sys.argv[2]
     target_path = sys.argv[3]
     error_type, testing_call = PACKAGES[package_name]
-    target_path = os.path.join(declare_path, package_name+'.go')
     run(package_name, error_type, testing_call, source_path, target_path)
 
