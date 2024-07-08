@@ -221,6 +221,14 @@ func NotEmpty(a interface{}) (bool, string) {
 	return false, "string or slice is empty"
 }
 
+// NotEqual checks if a != b
+func NotEqual(a, b interface{}) (bool, string) {
+	if ok, _ := Equal(a, b); !ok {
+		return true, ""
+	}
+	return false, fmt.Sprintf("%#v == %#v", a, b)
+}
+
 // NotFileExists checks if the file does not exist
 func NotFileExists(path string) (bool, string) {
 	if ok, _ := FileExists(path); !ok {
