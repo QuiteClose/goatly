@@ -41,7 +41,7 @@ import (
 DECLARE_FUNCTION = '''
 {comment}func {name}(t *testing.T, {args}, message string) bool {{
     conditionMet, reason := is.{name}
-	return unless.{unless_name}({arg_names}, func(s string) {{
+	return unless.{name}({arg_names}, func(s string) {{
 		{testing_call}("{error_type}: %s\\n%s", message, s)
 	}})
 }}'''
