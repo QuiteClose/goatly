@@ -18,7 +18,7 @@ func Any(t *testing.T, a, b interface{}, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.Any(a, b)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -28,7 +28,7 @@ func Contains(t *testing.T, a, b interface{}, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.Contains(a, b)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -38,7 +38,7 @@ func DirExists(t *testing.T, path string, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.DirExists(path)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -48,7 +48,7 @@ func Empty(t *testing.T, a interface{}, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.Empty(a)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -58,7 +58,7 @@ func Equal(t *testing.T, a, b interface{}, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.Equal(a, b)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -68,7 +68,7 @@ func False(t *testing.T, a bool, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.False(a)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -78,7 +78,7 @@ func FileExists(t *testing.T, path string, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.FileExists(path)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -88,7 +88,7 @@ func GreaterThan(t *testing.T, a, b int, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.GreaterThan(a, b)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -98,7 +98,7 @@ func GreaterThanOrEqual(t *testing.T, a, b int, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.GreaterThanOrEqual(a, b)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -108,7 +108,7 @@ func LessThan(t *testing.T, a, b int, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.LessThan(a, b)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -118,7 +118,7 @@ func LessThanOrEqual(t *testing.T, a, b int, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.LessThanOrEqual(a, b)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -128,7 +128,7 @@ func LongerThan(t *testing.T, a interface{}, n int, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.LongerThan(a, n)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -138,7 +138,7 @@ func Matches(t *testing.T, a, pattern string, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.Matches(a, pattern)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -148,7 +148,7 @@ func Nil(t *testing.T, a interface{}, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.Nil(a)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -158,7 +158,7 @@ func NotAny(t *testing.T, a, b interface{}, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.NotAny(a, b)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -168,7 +168,7 @@ func NotContains(t *testing.T, a, b interface{}, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.NotContains(a, b)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -178,7 +178,7 @@ func NotDirExists(t *testing.T, path string, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.NotDirExists(path)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -188,7 +188,7 @@ func NotEmpty(t *testing.T, a interface{}, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.NotEmpty(a)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -198,7 +198,7 @@ func NotFileExists(t *testing.T, path string, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.NotFileExists(path)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -208,7 +208,7 @@ func NotMatches(t *testing.T, a, pattern string, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.NotMatches(a, pattern)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -218,7 +218,7 @@ func NotPathExists(t *testing.T, path string, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.NotPathExists(path)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -228,7 +228,7 @@ func NotTimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration, message stri
 	t.Helper()
 	conditionMet, reason := is.NotTimeWithin(t1, t2, d)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -238,7 +238,7 @@ func NotZero(t *testing.T, a interface{}, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.NotZero(a)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -248,7 +248,7 @@ func PathExists(t *testing.T, path string, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.PathExists(path)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -258,7 +258,7 @@ func ShorterThan(t *testing.T, a interface{}, n int, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.ShorterThan(a, n)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -268,7 +268,7 @@ func TimeAfter(t *testing.T, t1, t2 time.Time, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.TimeAfter(t1, t2)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -278,7 +278,7 @@ func TimeBefore(t *testing.T, t1, t2 time.Time, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.TimeBefore(t1, t2)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -288,7 +288,7 @@ func TimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration, message string)
 	t.Helper()
 	conditionMet, reason := is.TimeWithin(t1, t2, d)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -298,7 +298,7 @@ func True(t *testing.T, a bool, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.True(a)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
@@ -308,7 +308,7 @@ func Zero(t *testing.T, a interface{}, message string) bool {
 	t.Helper()
 	conditionMet, reason := is.Zero(a)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\nDetails: %s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }
