@@ -37,9 +37,10 @@ import (
 
 DECLARE_FUNCTION = '''
 {comment}func {name}(t *testing.T, {args}, message string) bool {{
+	t.Helper()
 	conditionMet, reason := is.{name}({arg_names})
 	if !conditionMet {{
-		{testing_call}("{error_type}: %s\\n%s", message, reason)
+		{testing_call}("{error_type}: %s\\nDetails: %s", message, reason)
 	}}
 	return conditionMet
 }}'''

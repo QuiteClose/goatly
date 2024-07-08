@@ -4,7 +4,7 @@
 package assert
 
 import (
-	"reflect"
+	"runtime"
 	"testing"
 	"time"
 
@@ -196,9 +196,10 @@ func NotMatches(t *testing.T, a, pattern string, message string) bool {
 
 // NotPathExists call t.Fatalf unless the path does not exist
 func NotPathExists(t *testing.T, path string, message string) bool {
+	t.Helper()
 	conditionMet, reason := is.NotPathExists(path)
 	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\n%s", message, reason)
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
 	}
 	return conditionMet
 }

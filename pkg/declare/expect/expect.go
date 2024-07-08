@@ -4,7 +4,6 @@
 package expect
 
 import (
-	"reflect"
 	"testing"
 	"time"
 
