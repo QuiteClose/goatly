@@ -5,8 +5,6 @@ package expect
 
 import (
 	"reflect"
-	"regexp"
-	"strings"
 	"testing"
 	"time"
 

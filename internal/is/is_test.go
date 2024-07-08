@@ -3,7 +3,6 @@ package is
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 	"time"
 
@@ -20,7 +19,7 @@ func TestAnyReturnsFalse(t *testing.T) {
 		t.Errorf("Any must return false if no item from sub-set b is in a")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -43,7 +42,7 @@ func TestContainsReturnsFalse(t *testing.T) {
 		t.Errorf("Contains must return false if a does not contain b")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -62,13 +61,13 @@ func TestContainsReturnsTrue(t *testing.T) {
 func TestDirExistsReturnsFalse(t *testing.T) {
 	existingPath := t.TempDir()
 	nonExistingPath := existingPath + "spoiled"
-	expected := `Path "spoiled" does not exist.`
+	expected := `Path "`+nonExistingPath+`" does not exist.`
 	given, reason := DirExists(nonExistingPath)
 	if given {
 		t.Errorf("DirExists must return false if the directory does not exist")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -92,7 +91,7 @@ func TestEmptyReturnsFalse(t *testing.T) {
 		t.Errorf("Empty must return false if the string or slice is not empty")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -115,7 +114,7 @@ func TestEqualReturnsFalse(t *testing.T) {
 		t.Errorf("Equal must return false if a != b")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -130,80 +129,6 @@ func TestEqualReturnsTrue(t *testing.T) {
 	}
 }
 
-// Error should return false with an error message if err is nil
-func TestErrorReturnsFalse(t *testing.T) {
-	expected := "no error occurred"
-	given, reason := Error(nil)
-	if given {
-		t.Errorf("Error must return false if err is nil")
-	}
-	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
-	}
-}
-
-// Error should return true with no error message if err is not nil
-func TestErrorReturnsTrue(t *testing.T) {
-	err := fmt.Errorf("an error occurred")
-	given, reason := Error(err)
-	if !given {
-		t.Errorf("Error must return true if err is not nil")
-	}
-	if reason != "" {
-		t.Errorf("Error message must be empty if condition is met")
-	}
-}
-
-// ErrorContains should return false with an error message if the error message does not contain the substring
-func TestErrorContainsReturnsFalse(t *testing.T) {
-	err := fmt.Errorf("an error occurred")
-	expected := "error does not contain substring"
-	given, reason := ErrorContains(err, "substring")
-	if given {
-		t.Errorf("ErrorContains must return false if the error message does not contain the substring")
-	}
-	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
-	}
-}
-
-// ErrorContains should return true with no error message if the error message contains the substring
-func TestErrorContainsReturnsTrue(t *testing.T) {
-	err := fmt.Errorf("an error occurred")
-	given, reason := ErrorContains(err, "error")
-	if !given {
-		t.Errorf("ErrorContains must return true if the error message contains the substring")
-	}
-	if reason != "" {
-		t.Errorf("Error message must be empty if condition is met")
-	}
-}
-
-// ErrorType should return false with an error message if the error is not of the given type
-func TestErrorTypeReturnsFalse(t *testing.T) {
-	err := fmt.Errorf("an error occurred")
-	expected := "error is not of type *os.PathError"
-	given, reason := ErrorType(err, &os.PathError{})
-	if given {
-		t.Errorf("ErrorType must return false if the error is not of the given type")
-	}
-	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
-	}
-}
-
-// ErrorType should return true with no error message if the error is of the given type
-func TestErrorTypeReturnsTrue(t *testing.T) {
-	err := &os.PathError{}
-	given, reason := ErrorType(err, &os.PathError{})
-	if !given {
-		t.Errorf("ErrorType must return true if the error is of the given type")
-	}
-	if reason != "" {
-		t.Errorf("Error message must be empty if condition is met")
-	}
-}
-
 // False should return false with an error message if a == true
 func TestFalseReturnsFalse(t *testing.T) {
 	expected := "true != false"
@@ -212,7 +137,7 @@ func TestFalseReturnsFalse(t *testing.T) {
 		t.Errorf("False must return false if a == true")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -227,17 +152,16 @@ func TestFalseReturnsTrue(t *testing.T) {
 	}
 }
 
-// FileExists should return false with an error message if the file does not exist
-func TestFileExistsReturnsFalse(t *testing.T) {
+// FileExists should return false with if the path is a directory.
+func TestFileExistsReturnsFalseForDirectory(t *testing.T) {
 	existingPath := t.TempDir()
-	nonExistingPath := existingPath + "spoiled"
-	expected := `Path "spoiled" does not exist.`
-	given, reason := FileExists(nonExistingPath)
+	expected := `Path "`+existingPath+`" is a directory`
+	given, reason := FileExists(existingPath)
 	if given {
 		t.Errorf("FileExists must return false if the file does not exist")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -265,7 +189,7 @@ func TestGreaterThanReturnsFalse(t *testing.T) {
 		t.Errorf("GreaterThan must return false if a <= b")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -288,7 +212,7 @@ func TestGreaterThanOrEqualReturnsFalse(t *testing.T) {
 		t.Errorf("GreaterThanOrEqual must return false if a < b")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -311,7 +235,7 @@ func TestLessThanReturnsFalse(t *testing.T) {
 		t.Errorf("LessThan must return false if a >= b")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -334,7 +258,7 @@ func TestLessThanOrEqualReturnsFalse(t *testing.T) {
 		t.Errorf("LessThanOrEqual must return false if a > b")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -357,7 +281,7 @@ func TestLongerThanReturnsFalse(t *testing.T) {
 		t.Errorf("LongerThan must return false if the length of the string or slice is not longer than n")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -380,7 +304,7 @@ func TestMatchesReturnsFalse(t *testing.T) {
 		t.Errorf("Matches must return false if the string does not match the regex pattern")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -403,7 +327,7 @@ func TestNilReturnsFalse(t *testing.T) {
 		t.Errorf("Nil must return false if the value is not nil")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -426,7 +350,7 @@ func TestNotAnyReturnsFalse(t *testing.T) {
 		t.Errorf("NotAny must return false if any item from sub-set b is in a")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -449,7 +373,7 @@ func TestNotContainsReturnsFalse(t *testing.T) {
 		t.Errorf("NotContains must return false if a contains b")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -467,13 +391,13 @@ func TestNotContainsReturnsTrue(t *testing.T) {
 // NotDirExists should return false with an error message if the directory exists
 func TestNotDirExistsReturnsFalse(t *testing.T) {
 	existingPath := t.TempDir()
-	expected := `Path "existingPath" exists.`
+	expected := `Path "`+existingPath+`" exists.`
 	given, reason := NotDirExists(existingPath)
 	if given {
 		t.Errorf("NotDirExists must return false if the directory exists")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -498,7 +422,7 @@ func TestNotEmptyReturnsFalse(t *testing.T) {
 		t.Errorf("NotEmpty must return false if the string or slice is empty")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -513,80 +437,6 @@ func TestNotEmptyReturnsTrue(t *testing.T) {
 	}
 }
 
-// NotError should return false with an error message if err is not nil
-func TestNotErrorReturnsFalse(t *testing.T) {
-	err := fmt.Errorf("an error occurred")
-	expected := "error occurred: an error occurred"
-	given, reason := NotError(err)
-	if given {
-		t.Errorf("NotError must return false if err is not nil")
-	}
-	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
-	}
-}
-
-// NotError should return true with no error message if err is nil
-func TestNotErrorReturnsTrue(t *testing.T) {
-	given, reason := NotError(nil)
-	if !given {
-		t.Errorf("NotError must return true if err is nil")
-	}
-	if reason != "" {
-		t.Errorf("Error message must be empty if condition is met")
-	}
-}
-
-// NotErrorContains should return false with an error message if the error message contains the substring
-func TestNotErrorContainsReturnsFalse(t *testing.T) {
-	err := fmt.Errorf("an error occurred")
-	expected := "error contains error"
-	given, reason := NotErrorContains(err, "error")
-	if given {
-		t.Errorf("NotErrorContains must return false if the error message contains the substring")
-	}
-	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
-	}
-}
-
-// NotErrorContains should return true with no error message if the error message does not contain the substring
-func TestNotErrorContainsReturnsTrue(t *testing.T) {
-	err := fmt.Errorf("an error occurred")
-	given, reason := NotErrorContains(err, "substring")
-	if !given {
-		t.Errorf("NotErrorContains must return true if the error message does not contain the substring")
-	}
-	if reason != "" {
-		t.Errorf("Error message must be empty if condition is met")
-	}
-}
-
-// NotErrorType should return false with an error message if the error is of the given type
-func TestNotErrorTypeReturnsFalse(t *testing.T) {
-	err := &os.PathError{}
-	expected := "error is of type *os.PathError"
-	given, reason := NotErrorType(err, &os.PathError{})
-	if given {
-		t.Errorf("NotErrorType must return false if the error is of the given type")
-	}
-	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
-	}
-}
-
-// NotErrorType should return true with no error message if the error is not of the given type
-func TestNotErrorTypeReturnsTrue(t *testing.T) {
-	err := fmt.Errorf("an error occurred")
-	given, reason := NotErrorType(err, &os.PathError{})
-	if !given {
-		t.Errorf("NotErrorType must return true if the error is not of the given type")
-	}
-	if reason != "" {
-		t.Errorf("Error message must be empty if condition is met")
-	}
-}
-
 // NotFileExists should return false with an error message if the file exists
 func TestNotFileExistsReturnsFalse(t *testing.T) {
 	existingPath := t.TempDir()
@@ -594,13 +444,13 @@ func TestNotFileExistsReturnsFalse(t *testing.T) {
 	file, _ := os.Create(filePath)
 	defer file.Close()
 
-	expected := `Path "testfile" exists.`
+	expected := `Path "`+filePath+`" exists.`
 	given, reason := NotFileExists(filePath)
 	if given {
 		t.Errorf("NotFileExists must return false if the file exists")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -625,7 +475,7 @@ func TestNotMatchesReturnsFalse(t *testing.T) {
 		t.Errorf("NotMatches must return false if the string matches the regex pattern")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -643,13 +493,13 @@ func TestNotMatchesReturnsTrue(t *testing.T) {
 // NotPathExists should return false with an error message if the path exists
 func TestNotPathExistsReturnsFalse(t *testing.T) {
 	existingPath := t.TempDir()
-	expected := `Path "existingPath" exists.`
+	expected := `Path "`+existingPath+`" exists.`
 	given, reason := NotPathExists(existingPath)
 	if given {
 		t.Errorf("NotPathExists must return false if the path exists")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -666,29 +516,6 @@ func TestNotPathExistsReturnsTrue(t *testing.T) {
 	}
 }
 
-// NotType should return false with an error message if a is of the given type
-func TestNotTypeReturnsFalse(t *testing.T) {
-	expected := "1 is of type int"
-	given, reason := NotType(1, reflect.TypeOf(1))
-	if given {
-		t.Errorf("NotType must return false if a is of the given type")
-	}
-	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
-	}
-}
-
-// NotType should return true with no error message if a is not of the given type
-func TestNotTypeReturnsTrue(t *testing.T) {
-	given, reason := NotType(1, reflect.TypeOf(""))
-	if !given {
-		t.Errorf("NotType must return true if a is not of the given type")
-	}
-	if reason != "" {
-		t.Errorf("Error message must be empty if condition is met")
-	}
-}
-
 // NotTimeWithin should return false with an error message if the time is within the duration
 func TestNotTimeWithinReturnsFalse(t *testing.T) {
 	t1 := time.Now()
@@ -699,7 +526,7 @@ func TestNotTimeWithinReturnsFalse(t *testing.T) {
 		t.Errorf("NotTimeWithin must return false if the time is within the duration")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -720,13 +547,13 @@ func TestNotTimeWithinReturnsTrue(t *testing.T) {
 func TestPathExistsReturnsFalse(t *testing.T) {
 	existingPath := t.TempDir()
 	nonExistingPath := existingPath + "spoiled"
-	expected := `Path "spoiled" does not exist.`
+	expected := `Path "`+nonExistingPath+`" does not exist.`
 	given, reason := PathExists(nonExistingPath)
 	if given {
 		t.Errorf("PathExists must return false if the path does not exist")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -750,7 +577,7 @@ func TestShorterThanReturnsFalse(t *testing.T) {
 		t.Errorf("ShorterThan must return false if the length of the string or slice is not shorter than n")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -775,7 +602,7 @@ func TestTimeAfterReturnsFalse(t *testing.T) {
 		t.Errorf("TimeAfter must return false if t1 is not after t2")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -802,7 +629,7 @@ func TestTimeBeforeReturnsFalse(t *testing.T) {
 		t.Errorf("TimeBefore must return false if t1 is not before t2")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -829,7 +656,7 @@ func TestTimeWithinReturnsFalse(t *testing.T) {
 		t.Errorf("TimeWithin must return false if the time is not within the duration")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -854,7 +681,7 @@ func TestTrueReturnsFalse(t *testing.T) {
 		t.Errorf("True must return false if a == false")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -869,29 +696,6 @@ func TestTrueReturnsTrue(t *testing.T) {
 	}
 }
 
-// Type should return false with an error message if a is not of the given type
-func TestTypeReturnsFalse(t *testing.T) {
-	expected := `"abc" is not of type int`
-	given, reason := Type("abc", reflect.TypeOf(1))
-	if given {
-		t.Errorf("Type must return false if a is not of the given type")
-	}
-	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
-	}
-}
-
-// Type should return true with no error message if a is of the given type
-func TestTypeReturnsTrue(t *testing.T) {
-	given, reason := Type("abc", reflect.TypeOf(""))
-	if !given {
-		t.Errorf("Type must return true if a is of the given type")
-	}
-	if reason != "" {
-		t.Errorf("Error message must be empty if condition is met")
-	}
-}
-
 // Zero should return false with an error message if a is not zero
 func TestZeroReturnsFalse(t *testing.T) {
 	expected := `"abc" is not zero`
@@ -900,7 +704,7 @@ func TestZeroReturnsFalse(t *testing.T) {
 		t.Errorf("Zero must return false if a is not zero")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 
@@ -923,7 +727,7 @@ func TestNotZeroReturnsFalse(t *testing.T) {
 		t.Errorf("NotZero must return false if a is zero")
 	}
 	if reason != expected {
-		t.Errorf(message.MustEqual("error message", expected, reason))
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 

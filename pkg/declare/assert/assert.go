@@ -5,8 +5,6 @@ package assert
 
 import (
 	"reflect"
-	"regexp"
-	"strings"
 	"testing"
 	"time"
 

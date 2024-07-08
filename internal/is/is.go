@@ -105,30 +105,6 @@ func Equal(a, b interface{}) (bool, string) {
 	return false, fmt.Sprintf("%#v != %#v", a, b)
 }
 
-// Error checks if err is not nil
-func Error(err error) (bool, string) {
-	if err != nil {
-		return true, ""
-	}
-	return false, "no error occurred"
-}
-
-// ErrorContains checks if the error message contains the substring
-func ErrorContains(err error, substr string) (bool, string) {
-	if err != nil && strings.Contains(err.Error(), substr) {
-		return true, ""
-	}
-	return false, fmt.Sprintf("error does not contain %s", substr)
-}
-
-// ErrorType checks if the error is of the given type
-func ErrorType(err error, errType interface{}) (bool, string) {
-	if err != nil && reflect.TypeOf(err) == reflect.TypeOf(errType) {
-		return true, ""
-	}
-	return false, fmt.Sprintf("error is not of type %T", errType)
-}
-
 // False checks if a == false
 func False(a bool) (bool, string) {
 	if !a {
@@ -140,10 +116,16 @@ func False(a bool) (bool, string) {
 // FileExists checks if the file exists
 func FileExists(path string) (bool, string) {
 	info, err := os.Stat(path)
-	if err == nil && !info.IsDir() {
-		return true, ""
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false, fmt.Sprintf("Path \"%s\" does not exist.", path)
+		}
+		return false, fmt.Sprintf("Error occurred: %v", err)
 	}
-	return false, fmt.Sprintf("Path \"%s\" does not exist.", path)
+	if info.IsDir() {
+		return false, fmt.Sprintf("Path %q is a directory", path)
+	}
+	return true, ""
 }
 
 // GreaterThan checks if a > b
@@ -239,30 +221,6 @@ func NotEmpty(a interface{}) (bool, string) {
 	return false, "string or slice is empty"
 }
 
-// NotError checks if err is nil
-func NotError(err error) (bool, string) {
-	if err == nil {
-		return true, ""
-	}
-	return false, fmt.Sprintf("error occurred: %v", err)
-}
-
-// NotErrorContains checks if the error message does not contain the substring
-func NotErrorContains(err error, substr string) (bool, string) {
-	if ok, _ := ErrorContains(err, substr); !ok {
-		return true, ""
-	}
-	return false, fmt.Sprintf("error contains %s", substr)
-}
-
-// NotErrorType checks if the error is not of the given type
-func NotErrorType(err error, errType interface{}) (bool, string) {
-	if ok, _ := ErrorType(err, errType); !ok {
-		return true, ""
-	}
-	return false, fmt.Sprintf("error is of type %T", errType)
-}
-
 // NotFileExists checks if the file does not exist
 func NotFileExists(path string) (bool, string) {
 	if ok, _ := FileExists(path); !ok {
@@ -289,14 +247,6 @@ func NotPathExists(path string) (bool, string) {
 		return true, ""
 	}
 	return false, fmt.Sprintf("Path \"%s\" exists.", path)
-}
-
-// NotType checks if a is not of the given type
-func NotType(a interface{}, b reflect.Type) (bool, string) {
-	if ok, _ := Type(a, b); !ok {
-		return true, ""
-	}
-	return false, fmt.Sprintf("%#v is of type %T", a, b)
 }
 
 // NotTimeWithin checks if the time is not within the duration
@@ -358,14 +308,6 @@ func True(a bool) (bool, string) {
 		return true, ""
 	}
 	return false, "false != true"
-}
-
-// Type checks if a is of the given type
-func Type(a interface{}, b reflect.Type) (bool, string) {
-	if reflect.TypeOf(a) == b {
-		return true, ""
-	}
-	return false, fmt.Sprintf("%#v is not of type %T", a, b)
 }
 
 // Zero checks if a is zero
