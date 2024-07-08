@@ -2,9 +2,9 @@ SHELL := /bin/bash
 MAKEFILE_PATH      := $(abspath $(lastword $(MAKEFILE_LIST)))
 PROJECT_DIR        := $(shell dirname $(MAKEFILE_PATH))
 SCRIPTS_DIR        := $(PROJECT_DIR)/scripts
-UNLESS_PATH=$(PROJECT_DIR)/internal/unless
-ASSERT_PATH=$(PROJECT_DIR)/pkg/declare/assert
-EXPECT_PATH=$(PROJECT_DIR)/pkg/declare/expect
+IS_PKG_PATH=$(PROJECT_DIR)/internal/is/is.go
+ASSERT_PATH=$(PROJECT_DIR)/pkg/declare/assert/assert.go
+EXPECT_PATH=$(PROJECT_DIR)/pkg/declare/expect/expect.go
 
 
 help:
@@ -21,8 +21,8 @@ declare:
 		echo "Error: Uncommitted changes detected! Commit changes and try again."; \
 	else \
 		echo "Generating declare package files..."; \
-		python3 $(SCRIPTS_DIR)/declare.py assert $(UNLESS_PATH) $(ASSERT_PATH); \
-		python3 $(SCRIPTS_DIR)/declare.py expect $(UNLESS_PATH) $(EXPECT_PATH); \
+		python3 $(SCRIPTS_DIR)/declare.py assert $(PROJECT_DIR)/internal/is/is.go $(PROJECT_DIR)/pkg/declare/assert/assert.go; \
+		python3 $(SCRIPTS_DIR)/declare.py expect $(PROJECT_DIR)/internal/is/is.go $(PROJECT_DIR)/pkg/declare/expect/expect.go; \
 	fi
 	@if [[ -z "$$(git status -s)" ]]; then \
 		echo "No changes applied."; \
