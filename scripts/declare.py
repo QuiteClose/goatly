@@ -26,8 +26,6 @@ package {package_name}
 
 import (
 	"reflect"
-	"regexp"
-	"strings"
 	"testing"
 	"time"
 

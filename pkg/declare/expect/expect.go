@@ -269,8 +269,8 @@ func NotTimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration, message stri
 }
 
 // NotType call t.Errorf unless a is not of the given type
-func NotType(t *testing.T, a interface{}, t reflect.Type, message string) bool {
-	conditionMet, reason := is.NotType(a, t)
+func NotType(t *testing.T, a interface{}, b reflect.Type, message string) bool {
+	conditionMet, reason := is.NotType(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
 	}
@@ -341,8 +341,8 @@ func True(t *testing.T, a bool, message string) bool {
 }
 
 // Type call t.Errorf unless a is of the given type
-func Type(t *testing.T, a interface{}, t reflect.Type, message string) bool {
-	conditionMet, reason := is.Type(a, t)
+func Type(t *testing.T, a interface{}, b reflect.Type, message string) bool {
+	conditionMet, reason := is.Type(a, b)
 	if !conditionMet {
 		t.Errorf("ExpectFailed: %s\n%s", message, reason)
 	}

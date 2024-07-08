@@ -193,7 +193,10 @@ func LongerThan(a interface{}, n int) (bool, string) {
 // Matches checks if a matches the regex pattern
 func Matches(a, pattern string) (bool, string) {
 	matched, err := regexp.MatchString(pattern, a)
-	if err == nil && matched {
+	if err != nil {
+		return false, fmt.Sprintf("error occurred: %v", err)
+	}
+	if matched {
 		return true, ""
 	}
 	return false, fmt.Sprintf("%#v does not match pattern %#v", a, pattern)
@@ -270,7 +273,11 @@ func NotFileExists(path string) (bool, string) {
 
 // NotMatches checks if a does not match the regex pattern
 func NotMatches(a, pattern string) (bool, string) {
-	if ok, _ := Matches(a, pattern); !ok {
+	matched, err := regexp.MatchString(pattern, a)
+	if err != nil {
+		return false, fmt.Sprintf("error occurred: %v", err)
+	}
+	if !matched {
 		return true, ""
 	}
 	return false, fmt.Sprintf("%#v matches pattern %#v", a, pattern)
