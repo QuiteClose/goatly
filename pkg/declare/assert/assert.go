@@ -59,33 +59,6 @@ func Equal(t *testing.T, a, b interface{}, message string) bool {
 	return conditionMet
 }
 
-// Error call t.Fatalf unless err is not nil
-func Error(t *testing.T, err error, message string) bool {
-	conditionMet, reason := is.Error(err)
-	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\n%s", message, reason)
-	}
-	return conditionMet
-}
-
-// ErrorContains call t.Fatalf unless the error message contains the substring
-func ErrorContains(t *testing.T, err error, substr string, message string) bool {
-	conditionMet, reason := is.ErrorContains(err, substr)
-	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\n%s", message, reason)
-	}
-	return conditionMet
-}
-
-// ErrorType call t.Fatalf unless the error is of the given type
-func ErrorType(t *testing.T, err error, errType interface{}, message string) bool {
-	conditionMet, reason := is.ErrorType(err, errType)
-	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\n%s", message, reason)
-	}
-	return conditionMet
-}
-
 // False call t.Fatalf unless a == false
 func False(t *testing.T, a bool, message string) bool {
 	conditionMet, reason := is.False(a)
@@ -203,33 +176,6 @@ func NotEmpty(t *testing.T, a interface{}, message string) bool {
 	return conditionMet
 }
 
-// NotError call t.Fatalf unless err is nil
-func NotError(t *testing.T, err error, message string) bool {
-	conditionMet, reason := is.NotError(err)
-	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\n%s", message, reason)
-	}
-	return conditionMet
-}
-
-// NotErrorContains call t.Fatalf unless the error message does not contain the substring
-func NotErrorContains(t *testing.T, err error, substr string, message string) bool {
-	conditionMet, reason := is.NotErrorContains(err, substr)
-	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\n%s", message, reason)
-	}
-	return conditionMet
-}
-
-// NotErrorType call t.Fatalf unless the error is not of the given type
-func NotErrorType(t *testing.T, err error, errType interface{}, message string) bool {
-	conditionMet, reason := is.NotErrorType(err, errType)
-	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\n%s", message, reason)
-	}
-	return conditionMet
-}
-
 // NotFileExists call t.Fatalf unless the file does not exist
 func NotFileExists(t *testing.T, path string, message string) bool {
 	conditionMet, reason := is.NotFileExists(path)
@@ -260,15 +206,6 @@ func NotPathExists(t *testing.T, path string, message string) bool {
 // NotTimeWithin call t.Fatalf unless the time is not within the duration
 func NotTimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration, message string) bool {
 	conditionMet, reason := is.NotTimeWithin(t1, t2, d)
-	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\n%s", message, reason)
-	}
-	return conditionMet
-}
-
-// NotType call t.Fatalf unless a is not of the given type
-func NotType(t *testing.T, a interface{}, b reflect.Type, message string) bool {
-	conditionMet, reason := is.NotType(a, b)
 	if !conditionMet {
 		t.Fatalf("AssertFailed: %s\n%s", message, reason)
 	}
@@ -332,15 +269,6 @@ func TimeWithin(t *testing.T, t1, t2 time.Time, d time.Duration, message string)
 // True call t.Fatalf unless a == true
 func True(t *testing.T, a bool, message string) bool {
 	conditionMet, reason := is.True(a)
-	if !conditionMet {
-		t.Fatalf("AssertFailed: %s\n%s", message, reason)
-	}
-	return conditionMet
-}
-
-// Type call t.Fatalf unless a is of the given type
-func Type(t *testing.T, a interface{}, b reflect.Type, message string) bool {
-	conditionMet, reason := is.Type(a, b)
 	if !conditionMet {
 		t.Fatalf("AssertFailed: %s\n%s", message, reason)
 	}

@@ -25,7 +25,6 @@ PACKAGE_HEADER = '''
 package {package_name}
 
 import (
-	"reflect"
 	"testing"
 	"time"
 
