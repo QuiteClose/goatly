@@ -113,12 +113,23 @@ func False(a bool) (bool, string) {
 	return false, "true != false"
 }
 
+func FileContent(path, content string) (bool, string) {
+	if exists, reason := FileExists(path); !exists {
+		return false, reason
+	}
+	if file, err := os.ReadFile(path); err != nil {
+		return false, fmt.Sprintf("error occurred: %v", err)
+	} else {
+		return Contains(string(file), content)
+	}
+}
+
 // FileExists checks if the file exists
 func FileExists(path string) (bool, string) {
 	info, err := os.Stat(path)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return false, fmt.Sprintf("Path \"%s\" does not exist.", path)
+			return false, fmt.Sprintf("Path \"%s\" does not exist", path)
 		}
 		return false, fmt.Sprintf("Error occurred: %v", err)
 	}

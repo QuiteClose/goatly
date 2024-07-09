@@ -3,6 +3,7 @@ package is
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -149,6 +150,20 @@ func TestFalseReturnsTrue(t *testing.T) {
 	}
 	if reason != "" {
 		t.Errorf("Error message must be empty if condition is met")
+	}
+}
+
+// FileContent should return false with an error message if the file content does not contain the expected string
+func TestFileContentReturnsFalse(t *testing.T) {
+	tempDir := t.TempDir()
+	fileName := filepath.Join(tempDir, "testfile.txt")
+	expected := `Path "`+fileName+`" does not exist`
+	given, reason := FileContent(fileName, "test content")
+	if given {
+		t.Errorf("FileContent must return false if the file does not exist")
+	}
+	if reason != expected {
+		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
 

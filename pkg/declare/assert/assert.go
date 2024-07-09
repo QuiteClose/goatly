@@ -193,6 +193,16 @@ func NotEmpty(t *testing.T, a interface{}, message string) bool {
 	return conditionMet
 }
 
+// NotEqual call t.Fatalf unless a != b
+func NotEqual(t *testing.T, a, b interface{}, message string) bool {
+	t.Helper()
+	conditionMet, reason := is.NotEqual(a, b)
+	if !conditionMet {
+		t.Fatalf("%s\nAssertFailed: %s", message, reason)
+	}
+	return conditionMet
+}
+
 // NotFileExists call t.Fatalf unless the file does not exist
 func NotFileExists(t *testing.T, path string, message string) bool {
 	t.Helper()
