@@ -153,7 +153,7 @@ func TestFalseReturnsTrue(t *testing.T) {
 	}
 }
 
-// FileContent should return false with an error message if the file content does not contain the expected string
+// FileContent should return false with an error message if the file does not exist
 func TestFileContentReturnsFalse(t *testing.T) {
 	tempDir := t.TempDir()
 	fileName := filepath.Join(tempDir, "testfile.txt")
@@ -166,6 +166,26 @@ func TestFileContentReturnsFalse(t *testing.T) {
 		t.Errorf(message.MustEqual("reason", expected, reason))
 	}
 }
+
+// FileContent should return false with an error message if the file content does not contain the expected string
+func TestFileContentReturnsFalseForWrongContent(t *testing.T) {
+	expected := `"written" does not contain "unwritten"`
+	tempDir := t.TempDir()
+	fileName := filepath.Join(tempDir, "testfile.txt")
+	file, _ := os.Create(fileName)
+	defer file.Close()
+	if _, err := file.WriteString("written"); err != nil {
+		t.Fatal(err)
+	}
+	given, reason := FileContent(fileName, "unwritten")
+	if given {
+		t.Errorf("FileContent must return false if the file content does not contain the expected string")
+	}
+	if reason != expected {
+		t.Errorf(message.MustEqual("reason", expected, reason))
+	}
+}
+
 
 // FileExists should return false with if the path is a directory.
 func TestFileExistsReturnsFalseForDirectory(t *testing.T) {
