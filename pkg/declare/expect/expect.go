@@ -73,6 +73,15 @@ func False(t *testing.T, a bool, message string) bool {
 	return conditionMet
 }
 
+func FileContent(t *testing.T, path, content string, message string) bool {
+	t.Helper()
+	conditionMet, reason := is.FileContent(path, content)
+	if !conditionMet {
+		t.Errorf("%s\nExpectFailed: %s", message, reason)
+	}
+	return conditionMet
+}
+
 // FileExists call t.Errorf unless the file exists
 func FileExists(t *testing.T, path string, message string) bool {
 	t.Helper()
